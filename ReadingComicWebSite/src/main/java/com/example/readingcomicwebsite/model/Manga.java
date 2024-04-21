@@ -60,5 +60,5 @@ public class Manga {
 
     //update_user
     @Column(name = "update_user")
-    private String updateUser;git
+    private String updateUser;
 }
