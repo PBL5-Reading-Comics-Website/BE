@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,14 +31,36 @@ public class Account implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    //user
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    //name
+    @Column(name = "name")
+    private String name;
+
+    //nickname
+    @Column(name = "nickname")
+    private String nickname;
+
+    //date_of_birth
+    @Column(name = "date_of_birth")
+    private Date dateOfBirth;
+
+    //gender
+    @Column(name = "gender")
+    private Boolean gender;
+
+    //email
+    @Column(name = "email")
+    private String email;
+
+    //avatar
+    @Column(name = "avatar")
+    private String avatar;
+
+    //registration_date
+    @Column(name = "registration_date")
+    private Date registrationDate;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

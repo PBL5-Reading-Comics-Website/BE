@@ -2,9 +2,7 @@ package com.example.readingcomicwebsite.auth;
 
 import com.example.readingcomicwebsite.config.JwtService;
 import com.example.readingcomicwebsite.model.Account;
-import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.repository.AccountRepository;
-import com.example.readingcomicwebsite.repository.UserRepository;
 import com.example.readingcomicwebsite.util.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,9 +14,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final AccountRepository repository;
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private JwtService jwtService;
+    private JwtService jwtService = new JwtService();
     private AuthenticationManager authenticationManager;
 
 
