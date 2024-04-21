@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.security.Key;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@CrossOrigin()
 public class JwtService {
     // Encryption key 256-bit
     private static final String SECRET_KEY = "46D9E638902CF3E6BD76ED00E13D25A1BCB5784661D7F9CE9D9CEAC9603D7598";
