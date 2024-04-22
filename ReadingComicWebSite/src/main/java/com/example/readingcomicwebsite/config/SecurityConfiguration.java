@@ -41,16 +41,31 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf()
                 .disable()
-                .authorizeHttpRequests((author) -> author
-                        .antMatchers("/api/auth/**").permitAll()
-                        .antMatchers("/api/public/**").permitAll()
-                        .antMatchers("/api/admin/**").hasRole("ADMIN")
-                        .antMatchers("/api/user/**").hasRole("USER")
-                        .antMatchers("/api/poster/**").hasRole("POSTER")
-                        .anyRequest().authenticated()
-                        .and()
-                        .authenticationProvider(authenticationProvider)
-                        .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class));
+                .authorizeHttpRequests((author) -> {
+                    try {
+                        author
+                                .antMatchers("/api/auth/**").permitAll()
+                                .antMatchers("/api/public/**").permitAll()
+                                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                                .antMatchers("/api/user/**").hasRole("USER")
+                                .antMatchers("/api/poster/**").hasRole("POSTER")
+                                .anyRequest().authenticated()
+                                .and()
+                                .formLogin() // This enables form login
+                                .and()
+                                .oauth2Login();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        http.authenticationProvider(authenticationProvider)
+                .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2Login();
         return http.build();
     }
 
