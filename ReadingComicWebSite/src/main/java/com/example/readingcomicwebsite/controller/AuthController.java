@@ -14,7 +14,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -56,5 +60,11 @@ public class AuthController {
             @RequestBody AuthenticaitonRequest request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
+    }
+    @GetMapping("/SSO/signingoogle")
+    public Map<String, Object> signingoogle(
+            OAuth2AuthenticationToken oAuth2AuthenticationToken
+    ) {
+        return oAuth2AuthenticationToken.getPrincipal().getAttributes();
     }
 }

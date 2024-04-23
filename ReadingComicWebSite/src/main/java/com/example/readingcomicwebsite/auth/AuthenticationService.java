@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.sql.Date;
+
 @Service
 @RequiredArgsConstructor
 @CrossOrigin()
@@ -25,6 +27,8 @@ public class AuthenticationService {
         var account = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .registrationDate(Date.valueOf(java.time.LocalDate.now()))
                 .role(Role.USER)
 
                 .build();
