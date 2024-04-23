@@ -24,7 +24,7 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var account = User.builder()
+        var user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
@@ -32,8 +32,8 @@ public class AuthenticationService {
                 .role(Role.USER)
 
                 .build();
-        repository.save(account);
-        var jwtToken = jwtService.generateToken(account);
+        repository.save(user);
+        var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
@@ -47,9 +47,9 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var account = repository.findByUsername(request.getUsername())
+        var user = repository.findByUsername(request.getUsername())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(account);
+        var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
@@ -57,12 +57,20 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(LoginRequest request) {
-        var account = repository.findByUsername(request.getUsername())
+        var user = repository.findByUsername(request.getUsername())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(account);
+        var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public String forgotPassword(ForgotPasswordRequest request) {
+        repository.findByEmail(request.getEmail())
+                .orElseThrow(
+                        () -> new RuntimeException("User not found with email: " + request.getEmail())
+                );
+        return null;
     }
 }

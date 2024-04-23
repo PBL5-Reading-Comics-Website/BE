@@ -61,4 +61,11 @@ public class AuthController {
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
+
+    @PutMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(
+            @RequestParam ForgotPasswordRequest request
+    ) {
+        return ResponseEntity.ok(service.forgotPassword(request));
+    }
 }
