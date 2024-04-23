@@ -32,34 +32,19 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling((exc) -> exc.authenticationEntryPoint((req, res, ex) -> {
-                    System.out.println(ex.getClass());
-                    res.sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
-                }))
                 .cors().and()
                 .csrf()
                 .disable()
-                .authorizeHttpRequests((author) -> {
-                    try {
-                        author
-                                .antMatchers("/api/auth/**").permitAll()
-                                .antMatchers("/api/public/**").permitAll()
-                                .antMatchers("/api/admin/**").hasRole("ADMIN")
-                                .antMatchers("/api/user/**").hasRole("USER")
-                                .antMatchers("/api/poster/**").hasRole("POSTER")
-                                .anyRequest().authenticated()
-                                .and()
-                                .formLogin() // This enables form login
-                                .and()
-                                .oauth2Login();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        http.authenticationProvider(authenticationProvider)
-                .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests((author) -> author
+                        .antMatchers("/api/auth/**").permitAll()
+                        .antMatchers("/api/public/**").permitAll()
+                        .antMatchers("/api/admin/**").hasRole("ADMIN")
+                        .antMatchers("/api/user/**").hasRole("USER")
+                        .antMatchers("/api/poster/**").hasRole("POSTER")
+                        .anyRequest().authenticated()
+                        .and()
+                        .authenticationProvider(authenticationProvider)
+                        .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class));
         return http.build();
     }
 

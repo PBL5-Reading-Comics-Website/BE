@@ -61,10 +61,4 @@ public class AuthController {
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
-    @GetMapping("/SSO/signingoogle")
-    public Map<String, Object> signingoogle(
-            OAuth2AuthenticationToken oAuth2AuthenticationToken
-    ) {
-        return oAuth2AuthenticationToken.getPrincipal().getAttributes();
-    }
 }
