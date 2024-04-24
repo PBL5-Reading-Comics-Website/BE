@@ -3,6 +3,7 @@ package com.example.readingcomicwebsite.auth;
 import com.example.readingcomicwebsite.config.JwtService;
 import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.repository.UserRepository;
+import com.example.readingcomicwebsite.util.EmailUtil;
 import com.example.readingcomicwebsite.util.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,8 +20,9 @@ import java.sql.Date;
 public class AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private JwtService jwtService = new JwtService();
+    private final JwtService jwtService = new JwtService();
     private AuthenticationManager authenticationManager;
+    private final EmailUtil emailUtil;
 
 
     public AuthenticationResponse register(RegisterRequest request) {
@@ -66,11 +68,16 @@ public class AuthenticationService {
                 .build();
     }
 
-    public String forgotPassword(ForgotPasswordRequest request) {
-        repository.findByEmail(request.getEmail())
+    public String forgotPassword(String email) {
+        repository.findByEmail(email)
                 .orElseThrow(
-                        () -> new RuntimeException("User not found with email: " + request.getEmail())
+                        () -> new RuntimeException("User not found with email: " + email)
                 );
-        return null;
+//        try {
+//            emailUtil.sendSetPasswordEmail(email);
+//        } catch (MessagingException e) {
+//            throw new RuntimeException("Unable to send set password email! Please try again.");
+//        }
+        return "Please check your email to set new password!";
     }
 }
