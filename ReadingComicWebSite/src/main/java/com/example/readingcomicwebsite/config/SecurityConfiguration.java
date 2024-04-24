@@ -32,12 +32,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling((exc) -> exc.authenticationEntryPoint((req, res, ex) -> {
-                    System.out.println(ex.getClass());
-                    res.sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
-                }))
                 .cors().and()
                 .csrf()
                 .disable()
@@ -57,7 +51,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
         configuration.setAllowedHeaders(
                 Arrays.asList("Authorization", "X-Requested-With", "Origin", "Content-Type", "Accept", "ContentType"));
