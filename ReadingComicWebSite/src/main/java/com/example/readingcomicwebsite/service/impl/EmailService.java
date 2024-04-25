@@ -1,4 +1,4 @@
-package com.example.readingcomicwebsite.service;
+package com.example.readingcomicwebsite.service.impl;
 
 import com.example.readingcomicwebsite.dto.EmailDto;
 import org.springframework.stereotype.Service;
