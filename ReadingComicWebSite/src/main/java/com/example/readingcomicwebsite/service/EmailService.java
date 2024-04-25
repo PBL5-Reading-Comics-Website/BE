@@ -12,11 +12,17 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     public void sendEmail(EmailDto emailDto) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(emailDto.getTo());
-        message.setSubject(emailDto.getSubject());
-        message.setText(emailDto.getSubject());
 
-        mailSender.send(message);
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(emailDto.getTo());
+            message.setSubject(emailDto.getSubject());
+            message.setText(emailDto.getSubject());
+            mailSender.send(message);
+        } catch (Exception exception) {
+            System.out.println(exception);
+            exception.printStackTrace();
+        }
+
     }
 }

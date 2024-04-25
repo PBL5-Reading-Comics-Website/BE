@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Component
 public class EmailUtil {
-    @Autowired
-    private JavaMailSender javaMailSender;
+//    @Autowired
+//    private JavaMailSender javaMailSender;
 //
 //    public void sendSetPasswordEmail(String email) throws MessagingException {
 //        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
