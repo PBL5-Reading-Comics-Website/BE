@@ -1,10 +1,9 @@
 package com.example.readingcomicwebsite.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Data
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
