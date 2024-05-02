@@ -6,10 +6,12 @@ import com.example.readingcomicwebsite.service.IChapterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChapterService implements IChapterService {
     private final ChapterRepository repository;
@@ -56,5 +58,10 @@ public class ChapterService implements IChapterService {
     @Override
     public List<Chapter> findAllByMangaId(Long mangaId) {
         return repository.findAllByMangaId(mangaId);
+    }
+
+    @Override
+    public boolean isChapterExist(Long id) {
+        return repository.existsById(id);
     }
 }

@@ -16,4 +16,6 @@ public interface IChapterService {
     void deleteById(Long id);
 
     List<Chapter> findAllByMangaId(Long mangaId);
+
+    boolean isChapterExist(Long id);
 }

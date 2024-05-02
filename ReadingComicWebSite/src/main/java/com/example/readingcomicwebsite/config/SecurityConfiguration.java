@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((author) -> author
                         .antMatchers("/api/auth/**").permitAll()
                         .antMatchers("/api/public/**").permitAll()
+                        .antMatchers("/api/cloudinary/**").permitAll()
                         .antMatchers("/api/admin/**").hasRole("ADMIN")
                         .antMatchers("/api/user/**").hasRole("USER")
                         .antMatchers("/api/poster/**").hasRole("POSTER")
