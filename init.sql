@@ -32,7 +32,7 @@ CREATE TABLE chapter (
     number INT NOT NULL,
     comment_number INT NOT NULL DEFAULT 0,
     publish_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     manga_id INT NOT NULL,
     FOREIGN KEY (manga_id)
         REFERENCES manga (id)
