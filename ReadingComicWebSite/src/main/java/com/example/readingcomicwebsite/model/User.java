@@ -35,10 +35,6 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
-    //nickname
-    @Column(name = "nickname")
-    private String nickname;
-
     //date_of_birth
     @Column(name = "date_of_birth")
     private Date dateOfBirth;

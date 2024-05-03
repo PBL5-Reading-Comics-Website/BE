@@ -6,6 +6,7 @@ import com.example.readingcomicwebsite.repository.UserRepository;
 import com.example.readingcomicwebsite.util.EmailUtil;
 import com.example.readingcomicwebsite.util.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,12 +25,16 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
     private final EmailUtil emailUtil;
 
-
     public AuthenticationResponse register(RegisterRequest request) {
+        String DEFAULT_AVATAR = "classpath:static/default-avatar.jpg";
         var user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
+                .name(request.getUsername())
+                .avatar(DEFAULT_AVATAR)
+                .dateOfBirth(Date.valueOf(java.time.LocalDate.now()))
+                .gender(true)
                 .registrationDate(Date.valueOf(java.time.LocalDate.now()))
                 .role(Role.USER)
 
@@ -79,5 +84,17 @@ public class AuthenticationService {
 //            throw new RuntimeException("Unable to send set password email! Please try again.");
 //        }
         return "Please check your email to set new password!";
+    }
+
+    public String updatePassword(User user) {
+        User userDb = repository.getById(user.getId());
+        if (userDb == null)
+            return null;
+        BeanUtils.copyProperties(user, userDb, "id");
+        repository.updateUserInfo(userDb.getUsername(), userDb.getEmail(), userDb.getPassword(), userDb.getId())
+                .orElseThrow(
+                        () -> new RuntimeException("User not found with id: " + user.getId())
+                );
+        return "Information updated successfully!";
     }
 }

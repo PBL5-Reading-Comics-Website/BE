@@ -68,4 +68,13 @@ public class AuthController {
     ) {
         return ResponseEntity.ok(service.forgotPassword(email));
     }
+
+    @PutMapping("/update-info")
+    public ResponseEntity<String> updatePassword(
+            @RequestBody User user
+    ) {
+        return ResponseEntity.ok(service.updatePassword(user));
+    }
+
+
 }
