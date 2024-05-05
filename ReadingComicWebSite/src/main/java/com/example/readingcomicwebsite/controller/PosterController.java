@@ -41,10 +41,10 @@ public class PosterController {
         return ResponseEntity.ok(mangaService.update(id, manga));
     }
 
-    @DeleteMapping("manga-delete/{id}")
-    public ResponseEntity<?> deleteManga(
-            @PathVariable Integer id
-    ) {
-        return ResponseEntity.ok(mangaService.deleteById(id));
-    }
+//    @DeleteMapping("manga-delete/{id}")
+//    public ResponseEntity<?> deleteManga(
+//            @PathVariable Integer id
+//    ) {
+//        return ResponseEntity.ok(mangaService.deleteById(id));
+//    }
 }
