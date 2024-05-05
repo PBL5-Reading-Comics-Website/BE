@@ -21,7 +21,7 @@ CREATE TABLE manga (
     favourite_number INT NOT NULL DEFAULT 0,
     comment_number INT NOT NULL DEFAULT 0,
     publish_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_at DATETIME,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     update_user_id INT,
     PRIMARY KEY (id)
 );
@@ -32,7 +32,7 @@ CREATE TABLE chapter (
     number INT NOT NULL,
     comment_number INT NOT NULL DEFAULT 0,
     publish_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     manga_id INT NOT NULL,
     FOREIGN KEY (manga_id)
         REFERENCES manga (id)
@@ -104,7 +104,7 @@ CREATE TABLE comment (
     id INT AUTO_INCREMENT NOT NULL,
     content longtext not null,
     create_at TIMESTAMP default CURRENT_TIMESTAMP,
-    update_at DATETIME NOT NULL,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     user_id INT NOT NULL,
     manga_id INT NOT NULL,
     FOREIGN KEY (user_id)
@@ -190,7 +190,7 @@ BEGIN
 
     IF NOT imageExists THEN
         -- Generate the image URL based on the image name, chapter name, and manga name
-        SET @imageUrl = CONCAT('https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714682300/van_chuong_viet/', REPLACE(mangaName, ' ', '%20'), '/', REPLACE(chapterName, ' ', '%20'), '/', REPLACE(imageName, ' ', '%20'), '.jpg');
+        SET @imageUrl = CONCAT('https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714697856/van_chuong_viet/', REPLACE(mangaName, ' ', '%20'), '/', REPLACE(chapterName, ' ', '%20'), '/', REPLACE(imageName, ' ', '%20'), '.jpg');
 
         -- Insert the new image for the chapter
         INSERT INTO image (name, image_url, image_id, chapter_id)
@@ -201,28 +201,28 @@ DELIMITER ;
 
 CALL InsertNewManga('BE BLUES Ao ni Nare', 'Tanaka Yasuki', 'Artist Name', 'Publishing Company', 'A story about a boy who dreams to become a professional football player.', 'https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714683288/van_chuong_viet/BE%20BLUES%20%7EAo%20ni%20Nare%7E/cover_a6dejj.png');
 
-CALL InsertNewChapter('BE BLUES Ao ni Nare', '[All For Manga Group] Vol. 1 Ch. 1');
-CALL InsertNewChapter('BE BLUES Ao ni Nare', '[All For Manga Group] Vol. 1 Ch. 2');
+CALL InsertNewChapter('BE BLUES Ao ni Nare', 'Vol. 1 Ch. 1');
+CALL InsertNewChapter('BE BLUES Ao ni Nare', 'Vol. 1 Ch. 2');
 
-CALL InsertChapterImage(1, '00_uaqler', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '01_gkhxmg', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '02_ed6rws', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '03_bzuvx5', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '04_vavicn', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '05_iwoyj0', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '06_jtzqys', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '07_in7jwn', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '08_lsbcj6', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '09_l6ntl8', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '10_apnzve', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '11_a4cwm0', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '12_aigec7', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '00_m0kuuz', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '01_lt8uan', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '02_fppavu', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '03_ytwdzu', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '04_an4abq', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '05_p2yeiv', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '06_nuslh8', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '07_xzt39d', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '08_xwpop3', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '09_cckzwo', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '10_jzn0mp', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '11_trsw8y', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '12_g3vgy7', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
 
-CALL InsertChapterImage(2, '00_zvcw4f', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(2, '01_abyj4j', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(2, '02_nbvpqm', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(2, '03_iusu3m', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(2, '04_deamhn', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(2, '05_ijijny', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(2, '06_fd3u1a', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(2, '07_dzudqc', 'Image ID', '[All For Manga Group] Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '01_h9afk4', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '02_movz4f', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '05_ozq4d3', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '06_aqdcbk', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '07_mjbgtp', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '08_m2zpn1', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '10_oedkfj', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(2, '11_mb5nkh', 'Image ID', 'Vol. 1 Ch. 2', 'BE BLUES Ao ni Nare');

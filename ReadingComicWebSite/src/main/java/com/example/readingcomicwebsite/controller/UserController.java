@@ -53,4 +53,9 @@ public class UserController {
         readingHistoryService.deleteById(id);
     }
 
+    @GetMapping("/user/{id}")
+    public Object getUserById(@PathVariable Integer id) {
+        return userService.findById(id);
+    }
+
 }
