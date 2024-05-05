@@ -18,5 +18,9 @@ public interface IMangaService {
     void deleteById(Integer id);
 
     List<Manga> findAllByTagId(Long tagId);
+
+    Manga likeManga(Integer id);
+
+    Manga viewManga(Integer id);
 }
 

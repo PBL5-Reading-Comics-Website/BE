@@ -39,8 +39,8 @@ public class CloudinaryController {
     @ResponseBody
     public ResponseEntity<String> upload(
             @RequestParam("chapterId") Integer chapterId,
-            @RequestParam MultipartFile multipartFile
-            ) throws IOException {
+            @RequestBody MultipartFile multipartFile
+    ) throws IOException {
         Chapter chapter = chapterService.findById(chapterId);
         BufferedImage bi = ImageIO.read(multipartFile.getInputStream());
         if (bi == null) {
@@ -54,11 +54,11 @@ public class CloudinaryController {
                 chapter
         );
         imageService.save(image);
-        return ResponseEntity.ok().body("Upload successfully");
+        return ResponseEntity.ok().body((String) result.get("url"));
     }
 
     @DeleteMapping("/delete/{id}")
-public ResponseEntity<String> delete(
+    public ResponseEntity<String> delete(
             @PathVariable("id") Integer id
     ) throws IOException {
         Optional<Image> imageOptional = imageService.getOne(id);

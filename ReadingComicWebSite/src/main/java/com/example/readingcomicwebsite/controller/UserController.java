@@ -58,4 +58,38 @@ public class UserController {
         return userService.findById(id);
     }
 
+    // Endpoint for getting all comments
+    @GetMapping("/comments")
+    public Object getAllComments() {
+        return commentService.findAll();
+    }
+
+    // Endpoint for getting a comment by id
+    @GetMapping("/comment/{id}")
+    public Object getCommentById(@PathVariable Integer id) {
+        return commentService.findById(id);
+    }
+
+    // Endpoint for deleting a comment by id
+    @DeleteMapping("/comment/{id}")
+    public void deleteCommentById(@PathVariable Integer id) {
+        commentService.deleteById(id);
+    }
+
+    // Endpoint for getting all mangas
+    @GetMapping("/mangas")
+    public Object getAllMangas() {
+        return mangaService.findAll();
+    }
+
+    // Endpoint for getting a manga by id
+    @GetMapping("/manga/{id}")
+    public Object getMangaById(@PathVariable Integer id) {
+        return mangaService.findById(id);
+    }
+
+    @PutMapping("/like-manga/{id}")
+    public Object likeManga(@PathVariable Integer id) {
+        return mangaService.likeManga(id);
+    }
 }

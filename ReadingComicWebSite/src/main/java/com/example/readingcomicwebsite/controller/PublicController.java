@@ -140,6 +140,4 @@ public class PublicController {
         tagService.deleteById(id);
     }
 
-    // Endpoint for getting all followings
-
 }

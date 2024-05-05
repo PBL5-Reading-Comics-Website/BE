@@ -60,4 +60,24 @@ public class MangaService implements IMangaService {
     public List<Manga> findAllByTagId(Long tagId) {
         return repository.findAllByTagId(tagId);
     }
+
+    @Override
+    public Manga likeManga(Integer id) {
+        Manga manga = repository.findById(id).orElse(null);
+        if (manga == null) {
+            return null;
+        }
+        manga.setFavouriteNumber(manga.getFavouriteNumber() + 1);
+        return repository.save(manga);
+    }
+
+    @Override
+    public Manga viewManga(Integer id) {
+        Manga manga = repository.findById(id).orElse(null);
+        if (manga == null) {
+            return null;
+        }
+        manga.setFavouriteNumber(manga.getFavouriteNumber() + 1);
+        return repository.save(manga);
+    }
 }

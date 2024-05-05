@@ -30,4 +30,21 @@ public class PosterController {
         BeanUtils.copyProperties(mangaDto, manga);
         return ResponseEntity.ok(mangaService.add(manga));
     }
+
+    @PutMapping("manga-update/{id}")
+    public ResponseEntity<?> updateManga(
+            @PathVariable Integer id,
+            @RequestBody MangaDto mangaDto
+    ) {
+        Manga manga = new Manga();
+        BeanUtils.copyProperties(mangaDto, manga);
+        return ResponseEntity.ok(mangaService.update(id, manga));
+    }
+
+    @DeleteMapping("manga-delete/{id}")
+    public ResponseEntity<?> deleteManga(
+            @PathVariable Integer id
+    ) {
+        return ResponseEntity.ok(mangaService.deleteById(id));
+    }
 }
