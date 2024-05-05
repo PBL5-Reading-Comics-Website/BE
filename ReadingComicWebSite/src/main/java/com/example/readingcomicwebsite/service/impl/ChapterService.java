@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,8 +23,8 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public Chapter findById(Long id) {
-        return repository.findById(id).orElse(null);
+    public Chapter findById(Integer id) {
+        return repository.findChapterById(id).orElse(null);
     }
 
     @Override
@@ -41,8 +42,8 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public Chapter update(Long id, Chapter chapter) {
-        Chapter chapterDb = repository.findById(id).orElse(null);
+    public Chapter update(Integer id, Chapter chapter) {
+        Chapter chapterDb = repository.findChapterById(id).orElse(null);
         if (chapterDb == null) {
             return null;
         }
@@ -51,17 +52,17 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(Integer id) {
+        repository.deleteChapterById(id);
     }
 
     @Override
-    public List<Chapter> findAllByMangaId(Long mangaId) {
+    public List<Chapter> findAllByMangaId(Integer mangaId) {
         return repository.findAllByMangaId(mangaId);
     }
 
     @Override
-    public boolean isChapterExist(Long id) {
-        return repository.existsById(id);
+    public boolean isChapterExist(Integer id) {
+        return repository.existsChapterById(id);
     }
 }

@@ -23,13 +23,13 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class CloudinaryController {
-    private CloudinaryService cloudinaryService;
-    private ChapterService chapterService;
-    private ImageService imageService;
+    private final CloudinaryService cloudinaryService;
+    private final ChapterService chapterService;
+    private final ImageService imageService;
 
-    @GetMapping("/list")
+    @GetMapping("/list/{chapterId}")
     public ResponseEntity<List<Image>> list(
-            @RequestParam("chapterId") Long chapterId
+            @PathVariable("chapterId") Integer chapterId
     ) {
         List<Image> images = imageService.list(chapterService.findById(chapterId));
         return ResponseEntity.ok().body(images);
@@ -38,7 +38,7 @@ public class CloudinaryController {
     @PostMapping("/upload")
     @ResponseBody
     public ResponseEntity<String> upload(
-            @RequestParam("chapterId") Long chapterId,
+            @RequestParam("chapterId") Integer chapterId,
             @RequestParam MultipartFile multipartFile
             ) throws IOException {
         Chapter chapter = chapterService.findById(chapterId);
@@ -59,7 +59,7 @@ public class CloudinaryController {
 
     @DeleteMapping("/delete/{id}")
 public ResponseEntity<String> delete(
-            @PathVariable("id") Long id
+            @PathVariable("id") Integer id
     ) throws IOException {
         Optional<Image> imageOptional = imageService.getOne(id);
         if (imageOptional.isEmpty()) {

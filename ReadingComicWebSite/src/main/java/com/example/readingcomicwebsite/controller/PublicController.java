@@ -40,13 +40,13 @@ public class PublicController {
 
     // Endpoint for getting a user by id
     @GetMapping("/user/{id}")
-    public Object getUserById(Integer id) {
+    public Object getUserById(@PathVariable Integer id) {
         return userService.findById(id);
     }
 
     // Endpoint for deleting a user by id
     @DeleteMapping("/user/{id}")
-    public void deleteUserById(Integer id) {
+    public void deleteUserById(@PathVariable Integer id) {
         userService.deleteById(id);
     }
 
@@ -58,13 +58,13 @@ public class PublicController {
 
     // Endpoint for getting a manga by id
     @GetMapping("/manga/{id}")
-    public Object getMangaById(Long id) {
+    public Object getMangaById(@PathVariable Integer id) {
         return mangaService.findById(id);
     }
 
     // Endpoint for deleting a manga by id
     @DeleteMapping("/manga/{id}")
-    public void deleteMangaById(Long id) {
+    public void deleteMangaById(@PathVariable Integer id) {
         mangaService.deleteById(id);
     }
 
@@ -76,13 +76,13 @@ public class PublicController {
 
     // Endpoint for getting a chapter by id
     @GetMapping("/chapter/{id}")
-    public Object getChapterById(Long id) {
+    public Object getChapterById(@PathVariable Integer id) {
         return chapterService.findById(id);
     }
 
     // Endpoint for deleting a chapter by id
     @DeleteMapping("/chapter/{id}")
-    public void deleteChapterById(Long id) {
+    public void deleteChapterById(@PathVariable Integer id) {
         chapterService.deleteById(id);
     }
 
@@ -94,13 +94,13 @@ public class PublicController {
 
     // Endpoint for getting a comment by id
     @GetMapping("/comment/{id}")
-    public Object getCommentById(Integer id) {
+    public Object getCommentById(@PathVariable Integer id) {
         return commentService.findById(id);
     }
 
     // Endpoint for deleting a comment by id
     @DeleteMapping("/comment/{id}")
-    public void deleteCommentById(Integer id) {
+    public void deleteCommentById(@PathVariable Integer id) {
         commentService.deleteById(id);
     }
 
@@ -112,13 +112,13 @@ public class PublicController {
 
     // Endpoint for getting a report by id
     @GetMapping("/report/{id}")
-    public Object getReportById(Long id) {
+    public Object getReportById(@PathVariable Integer id) {
         return reportService.findById(id);
     }
 
     // Endpoint for deleting a report by id
     @DeleteMapping("/report/{id}")
-    public void deleteReportById(Long id) {
+    public void deleteReportById(@PathVariable Integer id) {
         reportService.deleteById(id);
     }
 
@@ -130,13 +130,13 @@ public class PublicController {
 
     // Endpoint for getting a tag by id
     @GetMapping("/tag/{id}")
-    public Object getTagById(Long id) {
+    public Object getTagById(@PathVariable Integer id) {
         return tagService.findById(id);
     }
 
     // Endpoint for deleting a tag by id
     @DeleteMapping("/tag/{id}")
-    public void deleteTagById(Long id) {
+    public void deleteTagById(@PathVariable Integer id) {
         tagService.deleteById(id);
     }
 

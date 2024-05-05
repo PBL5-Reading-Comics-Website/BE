@@ -20,7 +20,7 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public Report findById(Long id) {
+    public Report findById(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -30,7 +30,7 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public Report update(Long id, Report report) {
+    public Report update(Integer id, Report report) {
         Report reportDb = repository.findById(id).orElse(null);
         if (reportDb == null) {
             return null;
@@ -40,7 +40,7 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
     }
 }

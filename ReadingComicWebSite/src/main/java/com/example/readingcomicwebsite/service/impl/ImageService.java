@@ -21,7 +21,7 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public Optional<Image> getOne(Long id) {
+    public Optional<Image> getOne(Integer id) {
         return repository.findById(id);
     }
 
@@ -31,12 +31,12 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.deleteById(id);
     }
 
     @Override
-    public boolean isExist(Long id) {
+    public boolean isExist(Integer id) {
         return repository.existsById(id);
     }
 }

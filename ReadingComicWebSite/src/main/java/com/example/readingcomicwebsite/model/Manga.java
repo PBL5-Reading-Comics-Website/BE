@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Manga {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     //name
     @Column(name = "name")

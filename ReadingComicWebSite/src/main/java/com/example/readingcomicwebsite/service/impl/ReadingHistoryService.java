@@ -19,7 +19,7 @@ public class ReadingHistoryService implements IReadingHistoryService {
     }
 
     @Override
-    public ReadingHistory findById(Long id) {
+    public ReadingHistory findById(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -35,7 +35,7 @@ public class ReadingHistoryService implements IReadingHistoryService {
     }
 
     @Override
-    public ReadingHistory update(Long id, ReadingHistory readingHistory) {
+    public ReadingHistory update(Integer id, ReadingHistory readingHistory) {
         ReadingHistory readingHistoryDb = repository.findById(id).orElse(null);
         if (readingHistoryDb == null)
             return null;
@@ -44,12 +44,12 @@ public class ReadingHistoryService implements IReadingHistoryService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
     }
 
     @Override
-    public List<ReadingHistory> findAllByUserId(Long userId) {
+    public List<ReadingHistory> findAllByUserId(Integer userId) {
         return repository.findAllByUserId(userId);
     }
 }

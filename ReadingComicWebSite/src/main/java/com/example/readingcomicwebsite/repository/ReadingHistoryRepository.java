@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReadingHistoryRepository extends JpaRepository<ReadingHistory, Long>{
+public interface ReadingHistoryRepository extends JpaRepository<ReadingHistory, Integer> {
     // find all reading history by user id
-    List<ReadingHistory> findAllByUserId(Long userId);
+    List<ReadingHistory> findAllByUserId(Integer userId);
 }

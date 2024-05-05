@@ -190,7 +190,7 @@ BEGIN
 
     IF NOT imageExists THEN
         -- Generate the image URL based on the image name, chapter name, and manga name
-        SET @imageUrl = CONCAT('https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714682300/van_chuong_viet/', REPLACE(mangaName, ' ', '%20'), '/', chapterName, '/', imageName, '.jpg');
+        SET @imageUrl = CONCAT('https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714682300/van_chuong_viet/', REPLACE(mangaName, ' ', '%20'), '/', REPLACE(chapterName, ' ', '%20'), '/', REPLACE(imageName, ' ', '%20'), '.jpg');
 
         -- Insert the new image for the chapter
         INSERT INTO image (name, image_url, image_id, chapter_id)

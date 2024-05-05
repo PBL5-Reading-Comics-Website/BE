@@ -17,7 +17,7 @@ import java.sql.Date;
 public class ReadingHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "end_at")
     private Date endAt;

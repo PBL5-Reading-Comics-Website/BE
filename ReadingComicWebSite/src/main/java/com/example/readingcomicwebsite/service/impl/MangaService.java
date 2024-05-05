@@ -20,7 +20,7 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public Manga findById(Long id) {
+    public Manga findById(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -42,7 +42,7 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public Manga update(Long id, Manga manga) {
+    public Manga update(Integer id, Manga manga) {
         Manga mangaDb = repository.findById(id).orElse(null);
         if (mangaDb == null) {
             return null;
@@ -52,7 +52,7 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
     }
 

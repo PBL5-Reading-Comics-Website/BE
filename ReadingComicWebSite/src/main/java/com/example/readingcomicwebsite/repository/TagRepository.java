@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface Tagrepository extends JpaRepository<Tag, Long> {
+public interface TagRepository extends JpaRepository<Tag, Integer> {
     //find all tag by manga id
     @Query(value = "SELECT t.* FROM tag t JOIN manga m ON t.manga_id = m.id WHERE m.id = :mangaId;", nativeQuery = true)
-    List<Tag> findAllByMangaId(@Param("mangaId") Long mangaId);
+    List<Tag> findAllByMangaId(@Param("mangaId") Integer mangaId);
 
     List<Tag> findAllByNameLike(String name);
 }

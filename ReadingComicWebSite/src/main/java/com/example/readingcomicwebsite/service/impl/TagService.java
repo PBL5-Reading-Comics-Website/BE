@@ -1,7 +1,7 @@
 package com.example.readingcomicwebsite.service.impl;
 
 import com.example.readingcomicwebsite.model.Tag;
-import com.example.readingcomicwebsite.repository.Tagrepository;
+import com.example.readingcomicwebsite.repository.TagRepository;
 import com.example.readingcomicwebsite.service.ITagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TagService implements ITagService {
-    private final Tagrepository repository;
+    private final TagRepository repository;
 
     @Override
     public List<Tag> findAll() {
@@ -20,7 +20,7 @@ public class TagService implements ITagService {
     }
 
     @Override
-    public Tag findById(Long id) {
+    public Tag findById(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -32,7 +32,7 @@ public class TagService implements ITagService {
     }
 
     @Override
-    public Tag update(Long id, Tag tag) {
+    public Tag update(Integer id, Tag tag) {
         Tag tagDb = repository.findById(id).orElse(null);
         if (tagDb == null)
             return null;
@@ -41,12 +41,12 @@ public class TagService implements ITagService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
     }
 
     @Override
-    public List<Tag> findAllByMangaId(Long mangaId) {
+    public List<Tag> findAllByMangaId(Integer mangaId) {
         return repository.findAllByMangaId(mangaId);
     }
 }

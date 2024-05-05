@@ -7,11 +7,11 @@ import java.util.List;
 public interface IReportService {
     List<Report> findAll();
 
-    Report findById(Long id);
+    Report findById(Integer id);
 
     Report save(Report report);
 
-    Report update(Long id, Report report);
+    Report update(Integer id, Report report);
 
-    void deleteById(Long id);
+    void deleteById(Integer id);
 }

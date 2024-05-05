@@ -7,13 +7,13 @@ import java.util.List;
 public interface ITagService {
     List<Tag> findAll();
 
-    Tag findById(Long id);
+    Tag findById(Integer id);
 
     Tag add(Tag tag);
 
-    Tag update(Long id, Tag tag);
+    Tag update(Integer id, Tag tag);
 
-    void deleteById(Long id);
+    void deleteById(Integer id);
 
-    List<Tag> findAllByMangaId(Long mangaId);
+    List<Tag> findAllByMangaId(Integer mangaId);
 }

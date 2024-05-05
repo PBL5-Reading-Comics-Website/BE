@@ -7,15 +7,15 @@ import java.util.List;
 public interface IChapterService {
     List<Chapter> findAll();
 
-    Chapter findById(Long id);
+    Chapter findById(Integer id);
 
     Chapter add(Chapter chapter);
 
-    Chapter update(Long id, Chapter chapter);
+    Chapter update(Integer id, Chapter chapter);
 
-    void deleteById(Long id);
+    void deleteById(Integer id);
 
-    List<Chapter> findAllByMangaId(Long mangaId);
+    List<Chapter> findAllByMangaId(Integer mangaId);
 
-    boolean isChapterExist(Long id);
+    boolean isChapterExist(Integer id);
 }

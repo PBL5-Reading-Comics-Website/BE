@@ -7,13 +7,13 @@ import java.util.List;
 public interface IReadingHistoryService {
     List<ReadingHistory> findAll();
 
-    ReadingHistory findById(Long id);
+    ReadingHistory findById(Integer id);
 
     ReadingHistory add(ReadingHistory readingHistory);
 
-    ReadingHistory update(Long id, ReadingHistory readingHistory);
+    ReadingHistory update(Integer id, ReadingHistory readingHistory);
 
-    void deleteById(Long id);
+    void deleteById(Integer id);
 
-    List<ReadingHistory> findAllByUserId(Long userId);
+    List<ReadingHistory> findAllByUserId(Integer userId);
 }

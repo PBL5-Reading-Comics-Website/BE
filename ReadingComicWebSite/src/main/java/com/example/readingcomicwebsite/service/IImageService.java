@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface IImageService {
     List<Image> list(Chapter chapter);
-    Optional<Image> getOne(Long id);
+    Optional<Image> getOne(Integer id);
     void save(Image image);
-    void delete(Long id);
-    boolean isExist(Long id);
+    void delete(Integer id);
+    boolean isExist(Integer id);
 }

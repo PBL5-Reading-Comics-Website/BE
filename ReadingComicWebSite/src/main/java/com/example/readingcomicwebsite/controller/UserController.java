@@ -43,13 +43,13 @@ public class UserController {
 
     // Endpoint for getting a reading history by id
     @GetMapping("/reading-history/{id}")
-    public Object getReadingHistoryById(Long id) {
+    public Object getReadingHistoryById(Integer id) {
         return readingHistoryService.findById(id);
     }
 
     // Endpoint for deleting a reading history by id
     @DeleteMapping("/reading-history/{id}")
-    public void deleteReadingHistoryById(Long id) {
+    public void deleteReadingHistoryById(Integer id) {
         readingHistoryService.deleteById(id);
     }
 

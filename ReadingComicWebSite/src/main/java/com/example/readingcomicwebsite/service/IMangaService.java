@@ -7,15 +7,15 @@ import java.util.List;
 public interface IMangaService {
     List<Manga> findAll();
 
-    Manga findById(Long id);
+    Manga findById(Integer id);
 
     List<Manga> findByName(String name);
 
     Manga add(Manga manga);
 
-    Manga update(Long id, Manga manga);
+    Manga update(Integer id, Manga manga);
 
-    void deleteById(Long id);
+    void deleteById(Integer id);
 
     List<Manga> findAllByTagId(Long tagId);
 }
