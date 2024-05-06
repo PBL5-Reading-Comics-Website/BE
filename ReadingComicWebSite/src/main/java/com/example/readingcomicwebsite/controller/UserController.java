@@ -1,13 +1,9 @@
 package com.example.readingcomicwebsite.controller;
 
-import com.example.readingcomicwebsite.model.Following;
-import com.example.readingcomicwebsite.model.ReadingHistory;
 import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -24,13 +20,13 @@ public class UserController {
     private final IReadingHistoryService readingHistoryService;
 
     @GetMapping("/followings")
-    public List<Following> getAllFollowings() {
+    public Object getAllFollowings() {
         return followingService.findAll();
     }
 
     // Endpoint for getting a following by id
     @GetMapping("/following/{id}")
-    public Following getFollowingById(Integer id) {
+    public Object getFollowingById(Integer id) {
         return followingService.findById(id);
     }
 
@@ -42,13 +38,13 @@ public class UserController {
 
     // Endpoint for getting all reading histories
     @GetMapping("/reading-histories")
-    public List<ReadingHistory> getAllReadingHistories() {
+    public Object getAllReadingHistories() {
         return readingHistoryService.findAll();
     }
 
     // Endpoint for getting a reading history by id
     @GetMapping("/reading-history/{id}")
-    public ReadingHistory getReadingHistoryById(Integer id) {
+    public Object getReadingHistoryById(Integer id) {
         return readingHistoryService.findById(id);
     }
 
@@ -59,13 +55,13 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable Integer id) {
+    public Object getUserById(@PathVariable Integer id) {
         return userService.findById(id);
     }
 
-    @PutMapping("/user/{id}")
-    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
-        return userService.update(id, user);
+    @GetMapping("/user/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        return userService.findByUsername(username);
     }
 
     // Endpoint for getting all comments
