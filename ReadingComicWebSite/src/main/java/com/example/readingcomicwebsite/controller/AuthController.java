@@ -76,5 +76,10 @@ public class AuthController {
         return ResponseEntity.ok(service.updatePassword(user));
     }
 
-
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updateInfo(
+            @RequestBody User user
+    ) {
+        return ResponseEntity.ok(service.updatePassword(user));
+    }
 }

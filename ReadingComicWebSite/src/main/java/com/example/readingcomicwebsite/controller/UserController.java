@@ -1,8 +1,13 @@
 package com.example.readingcomicwebsite.controller;
 
+import com.example.readingcomicwebsite.model.Following;
+import com.example.readingcomicwebsite.model.ReadingHistory;
+import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -19,13 +24,13 @@ public class UserController {
     private final IReadingHistoryService readingHistoryService;
 
     @GetMapping("/followings")
-    public Object getAllFollowings() {
+    public List<Following> getAllFollowings() {
         return followingService.findAll();
     }
 
     // Endpoint for getting a following by id
     @GetMapping("/following/{id}")
-    public Object getFollowingById(Integer id) {
+    public Following getFollowingById(Integer id) {
         return followingService.findById(id);
     }
 
@@ -37,13 +42,13 @@ public class UserController {
 
     // Endpoint for getting all reading histories
     @GetMapping("/reading-histories")
-    public Object getAllReadingHistories() {
+    public List<ReadingHistory> getAllReadingHistories() {
         return readingHistoryService.findAll();
     }
 
     // Endpoint for getting a reading history by id
     @GetMapping("/reading-history/{id}")
-    public Object getReadingHistoryById(Integer id) {
+    public ReadingHistory getReadingHistoryById(Integer id) {
         return readingHistoryService.findById(id);
     }
 
@@ -54,8 +59,13 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public Object getUserById(@PathVariable Integer id) {
+    public User getUserById(@PathVariable Integer id) {
         return userService.findById(id);
+    }
+
+    @PutMapping("/user/{id}")
+    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
+        return userService.update(id, user);
     }
 
     // Endpoint for getting all comments
