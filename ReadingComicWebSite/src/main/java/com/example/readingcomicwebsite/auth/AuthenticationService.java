@@ -7,11 +7,13 @@ import com.example.readingcomicwebsite.util.EmailUtil;
 import com.example.readingcomicwebsite.util.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
 
@@ -26,6 +28,17 @@ public class AuthenticationService {
     private final EmailUtil emailUtil;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        if (repository.existsByUsername(request.getUsername())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Username is already taken"
+            );
+        }
+
+        if (repository.existsByEmail(request.getEmail())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Email is already in use"
+            );
+        }
         String DEFAULT_AVATAR = "classpath:static/default-avatar.jpg";
         var user = User.builder()
                 .username(request.getUsername())
