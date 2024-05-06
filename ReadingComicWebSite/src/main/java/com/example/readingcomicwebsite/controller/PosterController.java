@@ -1,6 +1,7 @@
 package com.example.readingcomicwebsite.controller;
 
 import com.example.readingcomicwebsite.dto.MangaDto;
+import com.example.readingcomicwebsite.model.Comment;
 import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.service.*;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +42,31 @@ public class PosterController {
         return ResponseEntity.ok(mangaService.update(id, manga));
     }
 
-//    @DeleteMapping("manga-delete/{id}")
-//    public ResponseEntity<?> deleteManga(
-//            @PathVariable Integer id
-//    ) {
-//        return ResponseEntity.ok(mangaService.deleteById(id));
-//    }
+    // Endpoint for deleting a manga by id
+    @DeleteMapping("/manga/{id}")
+    public void deleteMangaById(@PathVariable Integer id) {
+        mangaService.deleteById(id);
+    }
+
+    // Endpoint for deleting a chapter by id
+    @DeleteMapping("/chapter/{id}")
+    public void deleteChapterById(@PathVariable Integer id) {
+        chapterService.deleteById(id);
+    }
+
+    @PostMapping("/comment")
+    public Comment addComment(@RequestBody Comment comment) {
+        return commentService.save(comment);
+    }
+
+    @PutMapping("/comment/{id}")
+    public Comment updateComment(@PathVariable Integer id, @RequestBody Comment comment) {
+        return commentService.update(id, comment);
+    }
+
+    // Endpoint for deleting a comment by id
+    @DeleteMapping("/comment/{id}")
+    public void deleteCommentById(@PathVariable Integer id) {
+        commentService.deleteById(id);
+    }
 }
