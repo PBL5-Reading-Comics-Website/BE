@@ -1,9 +1,11 @@
 package com.example.readingcomicwebsite.controller;
 
+import com.example.readingcomicwebsite.auth.ApiDataResponse;
 import com.example.readingcomicwebsite.dto.EmailDto;
 import com.example.readingcomicwebsite.service.*;
 import com.example.readingcomicwebsite.service.impl.EmailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
@@ -52,8 +54,8 @@ public class PublicController {
 
     // Endpoint for getting all mangas
     @GetMapping("/mangas")
-    public Object getAllMangas() {
-        return mangaService.findAll();
+    public ResponseEntity<ApiDataResponse> getAllMangas() {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.findAll()));
     }
 
     // Endpoint for getting a manga by id

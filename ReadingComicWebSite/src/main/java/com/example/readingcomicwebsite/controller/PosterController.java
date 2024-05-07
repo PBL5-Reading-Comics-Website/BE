@@ -42,9 +42,10 @@ public class PosterController {
     }
 
     @DeleteMapping("manga-delete/{id}")
-    public ResponseEntity<?> deleteManga(
+    public ResponseEntity deleteManga(
             @PathVariable Integer id
     ) {
-        return ResponseEntity.ok(mangaService.deleteById(id));
+        mangaService.deleteById(id);
+        return ResponseEntity.ok("Deleted successfully");
     }
 }

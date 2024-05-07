@@ -55,12 +55,12 @@ public class AuthController {
         return ResponseEntity.ok().headers(headers).build();
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticaitonRequest request
-    ) {
-        return ResponseEntity.ok(service.authenticate(request));
-    }
+//    @PostMapping("/authenticate")
+//    public ResponseEntity<AuthenticationResponse> authenticate(
+//            @RequestBody AuthenticaitonRequest request
+//    ) {
+//        return ResponseEntity.ok(service.authenticate(request));
+//    }
 
     @PutMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(
