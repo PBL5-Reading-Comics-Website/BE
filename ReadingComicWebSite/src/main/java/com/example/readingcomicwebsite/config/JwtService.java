@@ -1,11 +1,11 @@
 package com.example.readingcomicwebsite.config;
 
+import com.example.readingcomicwebsite.model.UserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -42,7 +42,7 @@ public class JwtService {
                 .builder()
                 .setClaims(extractclaims)
                 .setSubject(userDetails.getUsername())
-                .claim("authorities", userDetails.getAuthorities())
+                .claim("user-details", new UserDetails(userDetails.getId(), String.valueOf(userDetails.getRoles()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30 * 12))
                 .signWith(SignatureAlgorithm.HS256, getSignInKey())
