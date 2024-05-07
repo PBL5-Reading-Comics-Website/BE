@@ -71,14 +71,14 @@ CREATE TABLE tag (
 
 CREATE TABLE user (
     id INT AUTO_INCREMENT NOT NULL,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     name VARCHAR(255),
     avatar LONGBLOB,
     date_of_birth DATE,
     gender BOOLEAN,
-    email VARCHAR(255),
-    registration_date TIMESTAMP default CURRENT_TIMESTAMP,
+    email VARCHAR(255) UNIQUE,
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     role_id INT NOT NULL DEFAULT 2,
     FOREIGN KEY (role_id)
         REFERENCES role (id),

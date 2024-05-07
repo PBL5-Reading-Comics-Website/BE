@@ -22,5 +22,15 @@ public interface IMangaService {
     Manga likeManga(Integer id);
 
     Manga viewManga(Integer id);
+
+    List<Manga> getTop10NewestManga();
+
+    List<Manga> getMangaPublishedInFirstQuarter();
+
+    List<Manga> getMangaPublishedInSecondQuarter();
+
+    List<Manga> getMangaPublishedInThirdQuarter();
+
+    List<Manga> getMangaPublishedInFourthQuarter();
 }
 

@@ -1,5 +1,6 @@
 package com.example.readingcomicwebsite.controller;
 
+import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,11 @@ public class UserController {
     @GetMapping("/user/{id}")
     public Object getUserById(@PathVariable Integer id) {
         return userService.findById(id);
+    }
+
+    @GetMapping("/user/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        return userService.findByUsername(username);
     }
 
     // Endpoint for getting all comments

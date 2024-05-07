@@ -80,4 +80,29 @@ public class MangaService implements IMangaService {
         manga.setFavouriteNumber(manga.getFavouriteNumber() + 1);
         return repository.save(manga);
     }
+
+    @Override
+    public List<Manga> getTop10NewestManga() {
+        return repository.findTop10ByOrderByPublishAtDesc();
+    }
+
+    @Override
+    public List<Manga> getMangaPublishedInFirstQuarter() {
+        return repository.findAllPublishedInFirstQuarter();
+    }
+
+    @Override
+    public List<Manga> getMangaPublishedInSecondQuarter() {
+        return repository.findAllPublishedInSecondQuarter();
+    }
+
+    @Override
+    public List<Manga> getMangaPublishedInThirdQuarter() {
+        return repository.findAllPublishedInThirdQuarter();
+    }
+
+    @Override
+    public List<Manga> getMangaPublishedInFourthQuarter() {
+        return repository.findAllPublishedInFourthQuarter();
+    }
 }
