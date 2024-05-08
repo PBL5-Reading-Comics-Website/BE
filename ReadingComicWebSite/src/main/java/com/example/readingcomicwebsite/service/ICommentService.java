@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface ICommentService {
     List<Comment> findAll();
-    List<Comment> findAllByMangaId(Long mangaId);
+
+    List<Comment> findAllByMangaId(Integer mangaId);
 
     Comment save(Comment comment);
 

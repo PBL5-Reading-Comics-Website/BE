@@ -76,14 +76,15 @@ public class UserController {
         readingHistoryService.deleteById(id);
     }
 
-    @GetMapping("/user/{id}")
-    public Object getUserById(@PathVariable Integer id) {
-        return userService.findById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiDataResponse> getUserById(@PathVariable Integer id) {
+
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findById(id)));
     }
 
-    @GetMapping("/user/{username}")
-    public User getUserByUsername(@PathVariable String username) {
-        return userService.findByUsername(username);
+    @GetMapping("/{username}")
+    public ResponseEntity<ApiDataResponse> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findByUsername(username)));
     }
 
     // Endpoint for getting all comments

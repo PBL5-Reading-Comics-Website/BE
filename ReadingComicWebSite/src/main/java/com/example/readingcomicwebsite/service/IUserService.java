@@ -2,7 +2,9 @@ package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.User;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserService {
 
@@ -10,7 +12,7 @@ public interface IUserService {
 
     User findById(Integer id);
 
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     User findByEmail(String email);
 

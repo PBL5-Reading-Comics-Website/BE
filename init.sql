@@ -102,9 +102,10 @@ CREATE TABLE reading_history (
 
 CREATE TABLE comment (
     id INT AUTO_INCREMENT NOT NULL,
-    content longtext not null,
-    create_at TIMESTAMP default CURRENT_TIMESTAMP,
+    content LONGTEXT NOT NULL,
+    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    reply_id INT NULL,
     user_id INT NOT NULL,
     manga_id INT NOT NULL,
     FOREIGN KEY (user_id)
@@ -138,18 +139,9 @@ CREATE TABLE following (
     PRIMARY KEY (id)
 );
   
-INSERT INTO comic_reading.`role` (name) VALUES ('ADMIN');
-INSERT INTO comic_reading.`role` (name) VALUES ('USER');
-INSERT INTO comic_reading.`role` (name) VALUES ('POSTER');
-
-INSERT INTO user (username, password, name, gender, email, role_id)
-VALUES ('admin', 'admin', 'ADMIN', true, 'admin@gmail.com', 1);
-
-INSERT INTO user (username, password, name, gender, email, role_id)
-VALUES ('user', 'user', 'Nhan', true, 'user@gmail.com', 2);
-
-INSERT INTO user (username, password, name, gender, email, role_id)
-VALUES ('poster', 'poster', 'Nhan Poster', true, 'poster@gmail.com', 3);
+INSERT INTO comic_reading.`role` (name) VALUES ('ROLE_ADMIN');
+INSERT INTO comic_reading.`role` (name) VALUES ('ROLE_USER');
+INSERT INTO comic_reading.`role` (name) VALUES ('ROLE_POSTER');
 
 DELIMITER //
 CREATE PROCEDURE InsertNewManga(IN mangaName VARCHAR(255), IN author VARCHAR(255), IN artist VARCHAR(255), IN publishing_company VARCHAR(255), IN description TEXT, IN cover_image VARCHAR(255), IN user_id int)
@@ -231,7 +223,8 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL InsertNewManga('BE BLUES Ao ni Nare', 'Tanaka Yasuki', 'Artist Name', 'Publishing Company', 'A story about a boy who dreams to become a professional football player.', 'https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714683288/van_chuong_viet/BE%20BLUES%20%7EAo%20ni%20Nare%7E/cover_a6dejj.png', 1);
+CALL InsertNewManga('BE BLUES Ao ni Nare', 'Tanaka Yasuki', 'Tanaka Yasuki', 'A Company', 'A story about a boy who dreams to become a professional football player.', 'https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714683288/van_chuong_viet/BE%20BLUES%20%7EAo%20ni%20Nare%7E/cover_a6dejj.png', 1);
+CALL InsertNewManga('Arakure Ojousama wa Monmon Shiteiru', 'Tanaka Yasuki', 'Artist Name', 'A Company', 'A story about a boy who dreams to become a professional football player.', 'https://res.cloudinary.com/dpkxkkrnl/image/upload/v1715082710/van_chuong_viet/Arakure%20Ojousama%20wa%20Monmon%20Shiteiru/cover_vi3srv.jpg', 1);
 
 CALL AddMultipleTags('["Sports", "Drama", "Slice of Life"]', 1);
 

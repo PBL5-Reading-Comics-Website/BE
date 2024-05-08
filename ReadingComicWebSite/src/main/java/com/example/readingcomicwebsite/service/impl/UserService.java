@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +26,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return repository.findByUsername(username).orElse(null);
+    public Optional<User> findByUsername(String username) {
+        return repository.findByUsername(username);
     }
 
     @Override
