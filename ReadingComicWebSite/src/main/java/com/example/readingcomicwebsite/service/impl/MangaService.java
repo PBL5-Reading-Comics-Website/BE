@@ -2,8 +2,10 @@ package com.example.readingcomicwebsite.service.impl;
 
 import com.example.readingcomicwebsite.auth.ErrorResponse;
 import com.example.readingcomicwebsite.model.Manga;
+import com.example.readingcomicwebsite.model.Tag;
 import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.repository.MangaRepository;
+import com.example.readingcomicwebsite.repository.TagRepository;
 import com.example.readingcomicwebsite.service.IMangaService;
 import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MangaService implements IMangaService {
     private final MangaRepository repository;
+    private final TagRepository tagRepository;
 
     @Override
     public Page<Manga> findAll(String sortField, String sortOrder, Integer page, Integer size) {
@@ -70,7 +73,7 @@ public class MangaService implements IMangaService {
 
     @Override
     public Page<Manga> findAllByTagId(Integer tagId, String sortField, String sortOrder, Integer page,
-                                         Integer size) {
+                                      Integer size) {
         return repository.findAllByTagId(tagId, PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
@@ -118,5 +121,29 @@ public class MangaService implements IMangaService {
     @Override
     public Page<Manga> getMangaPublishedInFourthQuarter(Integer page, Integer size, String sortField, String sortOrder) {
         return repository.findAllPublishedInFourthQuarter(PageUtils.makePageRequest(sortField, sortOrder, page, size));
+    }
+
+    @Override
+    public Page<Manga> findByTagAndName(Integer tagId, String name, String sortField, String sortOrder, Integer page,
+                                        Integer size) {
+        return repository.findAllByTagIdAndName(
+                tagId,
+                "%" + name + "%",
+                PageUtils.makePageRequest(sortField, sortOrder, page, size));
+    }
+
+    @Override
+    public Tag addTag(Integer mangaId, Integer tagId) {
+        Manga mangaDb = repository.findById(mangaId).orElse(null);
+        Tag tagDb = tagRepository.findById(tagId).orElse(null);
+        if (mangaDb == null || tagDb == null) {
+            return null;
+        }
+        Tag tag = new Tag();
+        tag.setName(tagDb.getName());
+        tag.setMangas(List.of(mangaDb));
+        mangaDb.getTags().add(tagDb);
+        repository.save(mangaDb);
+        return tagRepository.save(tag);
     }
 }

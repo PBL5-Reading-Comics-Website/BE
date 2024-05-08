@@ -14,4 +14,6 @@ public interface IReportService {
     Report update(Integer id, Report report);
 
     void deleteById(Integer id);
+
+    Report add(Report report);
 }

@@ -3,8 +3,12 @@ package com.example.readingcomicwebsite.service.impl;
 import com.example.readingcomicwebsite.model.ReadingHistory;
 import com.example.readingcomicwebsite.repository.ReadingHistoryRepository;
 import com.example.readingcomicwebsite.service.IReadingHistoryService;
+import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,5 +55,12 @@ public class ReadingHistoryService implements IReadingHistoryService {
     @Override
     public List<ReadingHistory> findAllByUserId(Integer userId) {
         return repository.findAllByUserId(userId);
+    }
+
+    @Override
+    public Page<ReadingHistory> findByUserId(Integer userId, String sortField, String sortOrder, Integer page,
+                                             Integer size) {
+        Pageable pageable = PageUtils.makePageRequest(sortField, sortOrder, page, size);
+        return repository.findByUserId(userId, pageable);
     }
 }

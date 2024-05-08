@@ -1,7 +1,10 @@
 package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.ReadingHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import javax.swing.*;
 import java.util.List;
 
 public interface IReadingHistoryService {
@@ -16,4 +19,6 @@ public interface IReadingHistoryService {
     void deleteById(Integer id);
 
     List<ReadingHistory> findAllByUserId(Integer userId);
+
+    Page<ReadingHistory> findByUserId(Integer userId, String sortField, String sortOrder, Integer page, Integer size);
 }

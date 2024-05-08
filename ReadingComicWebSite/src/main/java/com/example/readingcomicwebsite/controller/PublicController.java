@@ -220,6 +220,21 @@ public class PublicController {
         return tagService.findById(id);
     }
 
+    //get all manga by tag and name, sort by publish_at desc
+    @GetMapping("/manga")
+    public ResponseEntity<ApiDataResponse> getMangaByTagAndName(
+            @RequestParam(required = false) Integer tagId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String sortField,
+            @RequestParam(required = false) String sortOrder,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        Page<Manga> mangaPage = mangaService.findByTagAndName(tagId, name, sortField, sortOrder, page, size);
+        PageInfo pageInfo = PageUtils.makePageInfo(mangaPage);
+        return ResponseEntity.ok(ApiDataResponse.success(mangaPage.getContent(), pageInfo));
+    }
+
     @GetMapping("/info")
     public ResponseEntity<ApiDataResponse> getUserInfo(@AuthenticationPrincipal User user) {
         if (user == null) {
