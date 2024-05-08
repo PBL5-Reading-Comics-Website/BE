@@ -1,6 +1,7 @@
 package com.example.readingcomicwebsite.auth;
 
 import com.example.readingcomicwebsite.config.JwtService;
+import com.example.readingcomicwebsite.dto.UserDto;
 import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.model.UserDetailsCustome;
 import com.example.readingcomicwebsite.repository.UserRepository;
@@ -98,4 +99,10 @@ public class AuthenticationService {
         return "Password updated successfully!";
     }
 
+    public User updateInfo(UserDto userDto, Integer id) {
+        User userDb = repository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+        BeanUtils.copyProperties(userDto, userDb);
+        return repository.save(userDb);
+    }
 }
