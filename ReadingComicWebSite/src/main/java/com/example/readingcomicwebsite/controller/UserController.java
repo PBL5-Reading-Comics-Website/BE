@@ -82,10 +82,10 @@ public class UserController {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findById(id)));
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<ApiDataResponse> getUserByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findByUsername(username)));
-    }
+//    @GetMapping("/{username}")
+//    public ResponseEntity<ApiDataResponse> getUserByUsername(@PathVariable String username) {
+//        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findByUsername(username)));
+//    }
 
     // Endpoint for getting all comments
     @GetMapping("/comments")
