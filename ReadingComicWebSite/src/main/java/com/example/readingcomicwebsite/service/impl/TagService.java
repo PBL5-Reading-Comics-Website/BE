@@ -16,7 +16,7 @@ public class TagService implements ITagService {
 
     @Override
     public List<Tag> findAll() {
-        return repository.findAll();
+        return repository.findAllNoDuplicate();
     }
 
     @Override

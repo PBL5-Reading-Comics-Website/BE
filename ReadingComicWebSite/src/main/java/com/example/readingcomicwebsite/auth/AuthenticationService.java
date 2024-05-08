@@ -91,12 +91,16 @@ public class AuthenticationService {
         return "Please check your email to set a new password!";
     }
 
-    public String updatePassword(User user) {
-        User userDb = repository.findById(user.getId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + user.getId()));
-        userDb.setPassword(passwordEncoder.encode(user.getPassword()));
-        repository.save(userDb);
-        return "Password updated successfully!";
+    public User updatePassword(UpdatePasswordRequest request, Integer id) {
+        User userDb = repository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+        if (!passwordEncoder.matches(request.getOldPassword(), userDb.getPassword())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Old password is incorrect"
+            );
+        }
+        userDb.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        return repository.save(userDb);
     }
 
     public User updateInfo(UserDto userDto, Integer id) {
