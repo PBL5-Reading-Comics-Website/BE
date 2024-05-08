@@ -1,11 +1,12 @@
 package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.Chapter;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IChapterService {
-    List<Chapter> findAll();
+    Page<Chapter> findAll(String sortField, String sortOrder, Integer page, Integer size);
 
     Chapter findById(Integer id);
 

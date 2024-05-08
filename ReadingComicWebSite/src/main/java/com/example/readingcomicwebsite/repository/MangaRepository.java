@@ -1,6 +1,8 @@
 package com.example.readingcomicwebsite.repository;
 
 import com.example.readingcomicwebsite.model.Manga;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,14 +22,14 @@ public interface MangaRepository extends JpaRepository<Manga, Integer> {
     List<Manga> findTop10ByOrderByPublishAtDesc();
 
     @Query("SELECT m FROM Manga m WHERE MONTH(m.publishAt) IN (1, 2, 3)")
-    List<Manga> findAllPublishedInFirstQuarter();
+    Page<Manga> findAllPublishedInFirstQuarter(Pageable pageable);
 
     @Query("SELECT m FROM Manga m WHERE MONTH(m.publishAt) IN (4, 5, 6)")
-    List<Manga> findAllPublishedInSecondQuarter();
+    Page<Manga> findAllPublishedInSecondQuarter(Pageable pageable);
 
     @Query("SELECT m FROM Manga m WHERE MONTH(m.publishAt) IN (7, 8, 9)")
-    List<Manga> findAllPublishedInThirdQuarter();
+    Page<Manga> findAllPublishedInThirdQuarter(Pageable pageable);
 
     @Query("SELECT m FROM Manga m WHERE MONTH(m.publishAt) IN (10, 11, 12)")
-    List<Manga> findAllPublishedInFourthQuarter();
+    Page<Manga> findAllPublishedInFourthQuarter(Pageable pageable);
 }

@@ -1,11 +1,17 @@
 package com.example.readingcomicwebsite.service.impl;
 
+import com.example.readingcomicwebsite.auth.ErrorResponse;
 import com.example.readingcomicwebsite.model.Manga;
+import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.repository.MangaRepository;
 import com.example.readingcomicwebsite.service.IMangaService;
+import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,13 +21,17 @@ public class MangaService implements IMangaService {
     private final MangaRepository repository;
 
     @Override
-    public List<Manga> findAll() {
-        return repository.findAll();
+    public Page<Manga> findAll(String sortField, String sortOrder, Integer page, Integer size) {
+        return repository.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override
+    @Transactional
     public Manga findById(Integer id) {
-        return repository.findById(id).orElse(null);
+        Manga manga = repository.findById(id)
+                .orElseThrow(() -> new Error("Manga not found with id " + id));
+        manga.setViewNumber(manga.getViewNumber() + 1);
+        return repository.save(manga);
     }
 
     @Override
@@ -30,7 +40,8 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public Manga add(Manga manga) {
+    @Transactional
+    public Manga add(Manga manga, User user) {
         if (manga.getName() == null || manga.getName().isEmpty()) {
             return null;
         } else if (manga.getAuthor() == null || manga.getAuthor().isEmpty()) {
@@ -38,6 +49,7 @@ public class MangaService implements IMangaService {
         } else if (manga.getArtist() == null || manga.getArtist().isEmpty()) {
             return null;
         }
+        manga.setUpdateUser(user.getId());
         return repository.save(manga);
     }
 
@@ -87,22 +99,22 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public List<Manga> getMangaPublishedInFirstQuarter() {
-        return repository.findAllPublishedInFirstQuarter();
+    public Page<Manga> getMangaPublishedInFirstQuarter(Integer page, Integer size, String sortField, String sortOrder) {
+        return repository.findAllPublishedInFirstQuarter(PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override
-    public List<Manga> getMangaPublishedInSecondQuarter() {
-        return repository.findAllPublishedInSecondQuarter();
+    public Page<Manga> getMangaPublishedInSecondQuarter(Integer page, Integer size, String sortField, String sortOrder) {
+        return repository.findAllPublishedInSecondQuarter(PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override
-    public List<Manga> getMangaPublishedInThirdQuarter() {
-        return repository.findAllPublishedInThirdQuarter();
+    public Page<Manga> getMangaPublishedInThirdQuarter(Integer page, Integer size, String sortField, String sortOrder) {
+        return repository.findAllPublishedInThirdQuarter(PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override
-    public List<Manga> getMangaPublishedInFourthQuarter() {
-        return repository.findAllPublishedInFourthQuarter();
+    public Page<Manga> getMangaPublishedInFourthQuarter(Integer page, Integer size, String sortField, String sortOrder) {
+        return repository.findAllPublishedInFourthQuarter(PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 }

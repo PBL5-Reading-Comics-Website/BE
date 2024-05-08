@@ -1,11 +1,12 @@
 package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.Following;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IFollowingService {
-    List<Following> findAll();
+    Page<Following> findAll(String sortField, String sortOrder, Integer page, Integer size);
 
     Following findById(Integer id);
 
@@ -15,5 +16,5 @@ public interface IFollowingService {
 
     void deleteById(Integer id);
 
-    List<Following> findByUserId(Integer userId);
+    Page<Following> findByUserId(Integer userId, String sortField, String sortOrder, Integer page, Integer size);
 }

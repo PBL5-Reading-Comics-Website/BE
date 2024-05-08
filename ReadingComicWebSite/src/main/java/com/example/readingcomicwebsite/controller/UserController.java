@@ -1,9 +1,20 @@
 package com.example.readingcomicwebsite.controller;
 
+import com.example.readingcomicwebsite.auth.ApiDataResponse;
+import com.example.readingcomicwebsite.model.Following;
+import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.service.*;
+import com.example.readingcomicwebsite.util.PageInfo;
+import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,14 +31,25 @@ public class UserController {
     private final IReadingHistoryService readingHistoryService;
 
     @GetMapping("/followings")
-    public Object getAllFollowings() {
-        return followingService.findAll();
+    public ResponseEntity<ApiDataResponse> getAllFollowings(
+            @RequestParam(defaultValue = "id") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        Page<Following> followings = followingService.findAll(sortField, sortOrder, page, size);
+        PageInfo pageInfo = PageUtils.makePageInfo(followings);
+        return ResponseEntity.ok(ApiDataResponse.success(followings.getContent(), pageInfo));
     }
 
     // Endpoint for getting a following by id
     @GetMapping("/following/{id}")
-    public Object getFollowingById(Integer id) {
-        return followingService.findById(id);
+    public ResponseEntity<ApiDataResponse> getFollowingById(@PathVariable Integer id) {
+        Following following = followingService.findById(id);
+        if (following == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(following));
     }
 
     // Endpoint for deleting a following by id
@@ -80,12 +102,6 @@ public class UserController {
     @DeleteMapping("/comment/{id}")
     public void deleteCommentById(@PathVariable Integer id) {
         commentService.deleteById(id);
-    }
-
-    // Endpoint for getting all mangas
-    @GetMapping("/mangas")
-    public Object getAllMangas() {
-        return mangaService.findAll();
     }
 
     // Endpoint for getting a manga by id

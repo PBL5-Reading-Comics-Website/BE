@@ -15,31 +15,20 @@ public class ApiDataResponse {
     private Object error;
     private Object meta;
 
-    /**
-     * Create successful generic response instance
-     *
-     * @param data Data object
-     * @param meta Meta data include paging information
-     * @return ApiDataResponse
-     */
+    // Create successful generic response instance
     public static ApiDataResponse success(Object data, Object meta) {
-        return ApiDataResponse.builder().status("SUCCESS").data(data).meta(meta).build();
+        return ApiDataResponse.builder().status("success").data(data).meta(meta).build();
     }
 
     public static ApiDataResponse successWithoutMeta(Object data) {
-        return ApiDataResponse.builder().status("SUCCESS").data(data).build();
+        return ApiDataResponse.builder().status("success").data(data).build();
     }
 
     public static ApiDataResponse successWithoutMetaAndData() {
-        return ApiDataResponse.builder().status("SUCCESS").build();
+        return ApiDataResponse.builder().status("success").build();
     }
 
-    /**
-     * Create failed generic response instance
-     *
-     * @param error Error object description
-     * @return ResponseDataAPI
-     */
+    // Create failed generic response instance
     public static ApiDataResponse error(Object error) {
         return ApiDataResponse.builder().status("fail").error(error).build();
     }

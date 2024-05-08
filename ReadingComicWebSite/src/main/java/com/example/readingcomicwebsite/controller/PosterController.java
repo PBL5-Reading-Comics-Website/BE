@@ -1,7 +1,9 @@
 package com.example.readingcomicwebsite.controller;
 
 import com.example.readingcomicwebsite.dto.MangaDto;
+import com.example.readingcomicwebsite.model.Comment;
 import com.example.readingcomicwebsite.model.Manga;
+import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -24,11 +26,12 @@ public class PosterController {
 
     @PostMapping("manga-new")
     public ResponseEntity<?> createManga(
-            @RequestBody MangaDto mangaDto
+            @RequestBody MangaDto mangaDto,
+            @RequestBody User user
     ) {
         Manga manga = new Manga();
         BeanUtils.copyProperties(mangaDto, manga);
-        return ResponseEntity.ok(mangaService.add(manga));
+        return ResponseEntity.ok(mangaService.add(manga, user));
     }
 
     @PutMapping("manga-update/{id}")
