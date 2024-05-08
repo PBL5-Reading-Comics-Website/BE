@@ -11,6 +11,7 @@ import com.example.readingcomicwebsite.util.PageInfo;
 import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -221,8 +222,10 @@ public class PublicController {
 
     @GetMapping("/info")
     public ResponseEntity<ApiDataResponse> getUserInfo(@AuthenticationPrincipal User user) {
-        User thisUser = userService.getInfo(user);
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(user));
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiDataResponse.error("Authentication is required"));
+        }
+        User thisUser = userService.getInfo(user.getUsername());
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(thisUser));
     }
-
 }

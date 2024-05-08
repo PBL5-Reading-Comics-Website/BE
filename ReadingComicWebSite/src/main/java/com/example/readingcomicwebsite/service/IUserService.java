@@ -28,5 +28,5 @@ public interface IUserService {
 
     boolean checkExistUsername(String username);
 
-    User getInfo(User user);
+    User getInfo(String username);
 }

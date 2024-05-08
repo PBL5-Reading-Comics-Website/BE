@@ -231,8 +231,8 @@ CALL AddMultipleTags('["Sports", "Drama", "Slice of Life"]', 1);
 CALL InsertNewChapter('BE BLUES Ao ni Nare', 'Vol. 1 Ch. 1');
 CALL InsertNewChapter('BE BLUES Ao ni Nare', 'Vol. 1 Ch. 2');
 
-CALL InsertChapterImage(1, '00_m0kuuz', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
-CALL InsertChapterImage(1, '01_lt8uan', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '00_m0kuuz', '00_m0kuuz', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
+CALL InsertChapterImage(1, '01_lt8uan', '01_lt8uan', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
 CALL InsertChapterImage(1, '02_fppavu', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
 CALL InsertChapterImage(1, '03_ytwdzu', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
 CALL InsertChapterImage(1, '04_an4abq', 'Image ID', 'Vol. 1 Ch. 1', 'BE BLUES Ao ni Nare');
