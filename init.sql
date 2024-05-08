@@ -142,17 +142,36 @@ INSERT INTO comic_reading.`role` (name) VALUES ('ADMIN');
 INSERT INTO comic_reading.`role` (name) VALUES ('USER');
 INSERT INTO comic_reading.`role` (name) VALUES ('POSTER');
 
+INSERT INTO user (username, password, name, gender, email, role_id)
+VALUES ('admin', 'admin', 'ADMIN', true, 'admin@gmail.com', 1);
+
+INSERT INTO user (username, password, name, gender, email, role_id)
+VALUES ('user', 'user', 'Nhan', true, 'user@gmail.com', 2);
+
+INSERT INTO user (username, password, name, gender, email, role_id)
+VALUES ('poster', 'poster', 'Nhan Poster', true, 'poster@gmail.com', 3);
+
 DELIMITER //
-CREATE PROCEDURE InsertNewManga(IN mangaName VARCHAR(255), IN author VARCHAR(255), IN artist VARCHAR(255), IN publishing_company VARCHAR(255), IN description TEXT, IN cover_image VARCHAR(255))
+CREATE PROCEDURE InsertNewManga(IN mangaName VARCHAR(255), IN author VARCHAR(255), IN artist VARCHAR(255), IN publishing_company VARCHAR(255), IN description TEXT, IN cover_image VARCHAR(255), IN user_id int)
 BEGIN
     -- Check if the manga already exists
     DECLARE existingMangaId INT;
-    SELECT id INTO existingMangaId FROM manga WHERE name = mangaName;
+SELECT 
+    id
+INTO existingMangaId FROM
+    manga
+WHERE
+    name = mangaName;
+
+    -- Set default value for user_id if it is NULL
+    IF user_id IS NULL THEN
+        SET user_id = 1;
+    END IF;
 
     IF existingMangaId IS NULL THEN
         -- Insert the new manga
-        INSERT INTO manga (name, author, artist, publishing_company, description, cover_image)
-        VALUES (mangaName, author, artist, publishing_company, description, cover_image);
+        INSERT INTO manga (name, author, artist, publishing_company, description, cover_image, update_user_id)
+        VALUES (mangaName, author, artist, publishing_company, description, cover_image, user_id);
     ELSE
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'A manga with this name already exists.';
@@ -199,7 +218,22 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL InsertNewManga('BE BLUES Ao ni Nare', 'Tanaka Yasuki', 'Artist Name', 'Publishing Company', 'A story about a boy who dreams to become a professional football player.', 'https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714683288/van_chuong_viet/BE%20BLUES%20%7EAo%20ni%20Nare%7E/cover_a6dejj.png');
+DELIMITER //
+CREATE PROCEDURE AddMultipleTags(IN tagNames VARCHAR(255), IN mangaId INT)
+BEGIN
+    DECLARE idx INT DEFAULT 0;
+    DECLARE tagName VARCHAR(255);
+    WHILE idx < JSON_LENGTH(tagNames) DO
+        SET tagName = JSON_UNQUOTE(JSON_EXTRACT(tagNames, CONCAT('$[', idx, ']')));
+        INSERT INTO tag (name, manga_id) VALUES (tagName, mangaId);
+        SET idx = idx + 1;
+    END WHILE;
+END //
+DELIMITER ;
+
+CALL InsertNewManga('BE BLUES Ao ni Nare', 'Tanaka Yasuki', 'Artist Name', 'Publishing Company', 'A story about a boy who dreams to become a professional football player.', 'https://res.cloudinary.com/dpkxkkrnl/image/upload/v1714683288/van_chuong_viet/BE%20BLUES%20%7EAo%20ni%20Nare%7E/cover_a6dejj.png', 1);
+
+CALL AddMultipleTags('["Sports", "Drama", "Slice of Life"]', 1);
 
 CALL InsertNewChapter('BE BLUES Ao ni Nare', 'Vol. 1 Ch. 1');
 CALL InsertNewChapter('BE BLUES Ao ni Nare', 'Vol. 1 Ch. 2');
