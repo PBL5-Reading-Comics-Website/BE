@@ -20,7 +20,7 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public List<Comment> findAllByMangaId(Long mangaId) {
+    public List<Comment> findAllByMangaId(Integer mangaId) {
         return repository.findByMangaId(mangaId);
     }
 

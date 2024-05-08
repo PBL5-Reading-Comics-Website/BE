@@ -17,7 +17,7 @@ import java.sql.Date;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "content")
     private String content;
@@ -27,6 +27,9 @@ public class Comment {
 
     @Column(name = "update_at")
     private Date updateAt;
+
+    @Column(name = "reply_id")
+    private Integer replyId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

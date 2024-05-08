@@ -69,8 +69,8 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public List<Manga> findAllByTagId(Long tagId) {
-        return repository.findAllByTagId(tagId);
+    public Page<Manga> findAllByTagId(Integer tagId, String sortField, String sortOrder, Integer page, Integer size) {
+        return repository.findAllByTagId(tagId, PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override

@@ -133,7 +133,9 @@ public class PublicController {
         }
         Map<String, Object> response = new HashMap<>();
         response.put("manga", manga);
+        response.put("chapters", chapterService.findAllByMangaId(id));
         response.put("tags", tagService.findAllByMangaId(id));
+        response.put("comments", commentService.findAllByMangaId(id));
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(response));
     }
 
@@ -167,7 +169,6 @@ public class PublicController {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(chapterService.findAllByMangaId(id)));
     }
 
-
     // Endpoint for getting all comments
     @GetMapping("/comments")
     public List<Comment> getAllComments() {
@@ -199,5 +200,6 @@ public class PublicController {
         return tagService.findById(id);
     }
 
+//    @GetMapping("/manga/{id}/tags")
 
 }

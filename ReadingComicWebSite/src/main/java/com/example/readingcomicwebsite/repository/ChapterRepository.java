@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface ChapterRepository extends JpaRepository<Chapter, Integer> {
-    @Query(value = "SELECT DATE(publish_at) as publish_date FROM :chapter;", nativeQuery = true)
+    @Query(value = "SELECT DATE(publish_at) as publish_date FROM :chapter", nativeQuery = true)
     Date getPublishDate(@Param("chapter") Chapter chapter);
 
     // find all chapter by manga id
