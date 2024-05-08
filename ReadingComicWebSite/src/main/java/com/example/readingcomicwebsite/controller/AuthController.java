@@ -2,6 +2,7 @@ package com.example.readingcomicwebsite.controller;
 
 import com.example.readingcomicwebsite.auth.*;
 import com.example.readingcomicwebsite.config.JwtService;
+import com.example.readingcomicwebsite.dto.UserDto;
 import com.example.readingcomicwebsite.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,15 +70,16 @@ public class AuthController {
         return ResponseEntity.ok(service.forgotPassword(email));
     }
 
-    @PutMapping("/update-info")
-    public ResponseEntity<String> updatePassword(
-            @RequestBody User user
+    @PutMapping("/{id}/update-info")
+    public ResponseEntity<ApiDataResponse> updateInfo(
+            @RequestBody UserDto userDto,
+            @PathVariable Integer id
     ) {
-        return ResponseEntity.ok(service.updatePassword(user));
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(service.updateInfo(userDto, id)));
     }
 
     @PutMapping("/update-password")
-    public ResponseEntity<String> updateInfo(
+    public ResponseEntity<String> updatePassword(
             @RequestBody User user
     ) {
         return ResponseEntity.ok(service.updatePassword(user));
