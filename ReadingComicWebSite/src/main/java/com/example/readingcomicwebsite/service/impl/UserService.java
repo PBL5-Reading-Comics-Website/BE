@@ -83,7 +83,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getInfo(User user) {
-        return null;
+    public User getInfo(String username) {
+        return repository.findByUsername(username).orElse(null);
     }
 }
