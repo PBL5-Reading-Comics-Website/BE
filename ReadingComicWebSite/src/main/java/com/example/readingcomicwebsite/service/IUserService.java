@@ -12,8 +12,6 @@ public interface IUserService {
 
     User findById(Integer id);
 
-    Optional<User> findByUsername(String username);
-
     User findByEmail(String email);
 
     User findPasswordByUsername(String username);
@@ -30,4 +28,5 @@ public interface IUserService {
 
     boolean checkExistUsername(String username);
 
+    User getInfo(User user);
 }

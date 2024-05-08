@@ -25,10 +25,10 @@ public class UserService implements IUserService {
         return repository.findById(id).orElse(null);
     }
 
-    @Override
-    public Optional<User> findByUsername(String username) {
-        return repository.findByUsername(username);
-    }
+//    @Override
+//    public Optional<User> findByUsername(String username) {
+//        return repository.findByUsername(username);
+//    }
 
     @Override
     public User findByEmail(String email) {
@@ -80,5 +80,10 @@ public class UserService implements IUserService {
         if (repository.findByUsername(username).isEmpty())
             return false;
         return true;
+    }
+
+    @Override
+    public User getInfo(User user) {
+        return null;
     }
 }

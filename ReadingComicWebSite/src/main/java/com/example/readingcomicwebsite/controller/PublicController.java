@@ -6,6 +6,7 @@ import com.example.readingcomicwebsite.dto.EmailDto;
 import com.example.readingcomicwebsite.model.*;
 import com.example.readingcomicwebsite.service.*;
 import com.example.readingcomicwebsite.service.impl.EmailService;
+import com.example.readingcomicwebsite.service.impl.ImageService;
 import com.example.readingcomicwebsite.util.PageInfo;
 import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +14,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.yaml.snakeyaml.tokens.CommentToken;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 // PublicController handles all public-facing API endpoints
 @RestController
@@ -36,6 +39,7 @@ public class PublicController {
     private final ITagService tagService;
     private final IFollowingService followingService;
     private final IReadingHistoryService readingHistoryService;
+    private final ImageService imageService;
 
     // Endpoint for sending an email
     @PostMapping("/send-email")
@@ -155,7 +159,11 @@ public class PublicController {
     // Endpoint for getting a chapter by id
     @GetMapping("/chapter/{id}")
     public ResponseEntity<ApiDataResponse> getChapterById(@PathVariable Integer id) {
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(chapterService.findById(id)));
+        List<Image> images = imageService.list(chapterService.findById(id));
+        Map<String, Object> response = new HashMap<>();
+        response.put("chapter", chapterService.findById(id));
+        response.put("images", images);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(response));
     }
 
     @GetMapping("/manga/{id}/chapters")
@@ -181,6 +189,17 @@ public class PublicController {
         return commentService.findById(id);
     }
 
+    @GetMapping("/manga/{id}/comments")
+    public ResponseEntity<ApiDataResponse> getCommentsByMangaId(
+            @PathVariable Integer id,
+            @RequestParam(required = false) String sortField,
+            @RequestParam(required = false) String sortOrder,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.findAllByMangaId(id)));
+    }
+
     // Endpoint for deleting a report by id
     @DeleteMapping("/report/{id}")
     public void deleteReportById(@PathVariable Integer id) {
@@ -200,6 +219,10 @@ public class PublicController {
         return tagService.findById(id);
     }
 
-//    @GetMapping("/manga/{id}/tags")
+    @GetMapping("/info")
+    public ResponseEntity<ApiDataResponse> getUserInfo(@AuthenticationPrincipal User user) {
+        User thisUser = userService.getInfo(user);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(user));
+    }
 
 }
