@@ -4,4 +4,7 @@ public enum StatusUtil {
     COMPLETED,
     ONGOING,
     DROPPED,
+    PENDING,
+    ACCEPTED,
+    REJECTED
 }

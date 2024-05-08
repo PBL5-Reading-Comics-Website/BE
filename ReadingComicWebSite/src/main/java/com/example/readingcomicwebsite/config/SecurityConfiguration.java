@@ -40,7 +40,7 @@ public class SecurityConfiguration {
                         .antMatchers("/api/public/**").permitAll()
                         .antMatchers("/api/cloudinary/**").permitAll()
                         .antMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
-                        .antMatchers("/api/user/**").hasAuthority("USER")
+                        .antMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN", "POSTER")
                         .antMatchers("/api/poster/**").hasAnyAuthority("POSTER", "ADMIN")
                         .anyRequest().authenticated()
                         .and()

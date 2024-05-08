@@ -1,5 +1,6 @@
 package com.example.readingcomicwebsite.service;
 
+import com.example.readingcomicwebsite.dto.ChapterDto;
 import com.example.readingcomicwebsite.model.Chapter;
 import org.springframework.data.domain.Page;
 
@@ -10,7 +11,7 @@ public interface IChapterService {
 
     Chapter findById(Integer id);
 
-    Chapter add(Chapter chapter);
+    Chapter add(Integer mangaId, ChapterDto chapterDto);
 
     Chapter update(Integer id, Chapter chapter);
 

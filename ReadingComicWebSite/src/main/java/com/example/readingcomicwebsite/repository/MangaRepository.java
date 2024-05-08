@@ -33,4 +33,7 @@ public interface MangaRepository extends JpaRepository<Manga, Integer> {
 
     @Query("SELECT m FROM Manga m WHERE MONTH(m.publishAt) IN (10, 11, 12)")
     Page<Manga> findAllPublishedInFourthQuarter(Pageable pageable);
+
+    @Query(value = "SELECT manga.* FROM manga, tag WHERE manga.name LIKE :name AND tag.id = :tagId", nativeQuery = true)
+    Page<Manga> findAllByTagIdAndName(@Param("tagId") Integer tagId, @Param("name") String name, Pageable pageable);
 }

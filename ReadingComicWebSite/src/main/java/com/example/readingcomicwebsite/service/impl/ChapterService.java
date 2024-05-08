@@ -1,6 +1,8 @@
 package com.example.readingcomicwebsite.service.impl;
 
+import com.example.readingcomicwebsite.dto.ChapterDto;
 import com.example.readingcomicwebsite.model.Chapter;
+import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.repository.ChapterRepository;
 import com.example.readingcomicwebsite.service.IChapterService;
 import com.example.readingcomicwebsite.util.PageUtils;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ChapterService implements IChapterService {
     private final ChapterRepository repository;
+    private final MangaService mangaService;
 
     @Override
     public Page<Chapter> findAll(String sortField, String sortOrder, Integer page, Integer size) {
@@ -30,16 +33,14 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public Chapter add(Chapter chapter) {
-        if (chapter.getData() == null || chapter.getData().isEmpty()) {
-            return null;
-        } else if (chapter.getManga() == null) {
-            return null;
-        } else if (chapter.getName() == null || chapter.getName().isEmpty()) {
-            return null;
-        } else if (chapter.getNumber() == null) {
+    public Chapter add(Integer mangaId, ChapterDto chapterDto) {
+        Manga manga = mangaService.findById(mangaId);
+        if (manga == null) {
             return null;
         }
+        Chapter chapter = new Chapter();
+        chapter.setManga(manga);
+        BeanUtils.copyProperties(chapterDto, chapter);
         return repository.save(chapter);
     }
 

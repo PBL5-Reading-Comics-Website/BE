@@ -43,4 +43,9 @@ public class ReportService implements IReportService {
     public void deleteById(Integer id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Report add(Report report) {
+        return repository.save(report);
+    }
 }

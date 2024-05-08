@@ -25,4 +25,9 @@ public class Following {
     @ManyToOne
     @JoinColumn(name = "manga_id")
     private Manga manga;
+
+    public Following(User user, Manga manga) {
+        this.user = user;
+        this.manga = manga;
+    }
 }

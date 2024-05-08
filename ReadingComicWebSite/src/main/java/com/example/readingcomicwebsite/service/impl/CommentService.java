@@ -1,7 +1,11 @@
 package com.example.readingcomicwebsite.service.impl;
 
 import com.example.readingcomicwebsite.model.Comment;
+import com.example.readingcomicwebsite.model.Manga;
+import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.repository.CommentRepository;
+import com.example.readingcomicwebsite.repository.MangaRepository;
+import com.example.readingcomicwebsite.repository.UserRepository;
 import com.example.readingcomicwebsite.service.ICommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService implements ICommentService {
     private final CommentRepository repository;
+    private final MangaRepository mangaRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<Comment> findAll() {
@@ -40,9 +46,17 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Comment replyComment(Integer id, Comment comment) {
-        //write the function to reply the existing comment
-        return null;
+    public Comment replyComment(Integer id, Integer mangaId, Integer userId, Comment comment) {
+        Comment commentDb = repository.findById(id).orElse(null);
+        Manga manga = mangaRepository.findById(mangaId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if (commentDb == null || manga == null || user == null) {
+            return null;
+        }
+        comment.setManga(manga);
+        comment.setUser(user);
+        comment.setReplyId(commentDb.getId());
+        return repository.save(comment);
     }
 
     @Override
@@ -53,5 +67,22 @@ public class CommentService implements ICommentService {
     @Override
     public Comment findById(Integer id) {
         return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Comment add(Integer mangaId, Integer userId, Comment comment) {
+        Manga manga = mangaRepository.findById(mangaId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if (manga == null || user == null) {
+            return null;
+        }
+        comment.setManga(manga);
+        comment.setUser(user);
+        return repository.save(comment);
+    }
+
+    @Override
+    public List<Comment> findAllReplyCommentsByCommentId(Integer id) {
+        return repository.findByReplyId(id);
     }
 }

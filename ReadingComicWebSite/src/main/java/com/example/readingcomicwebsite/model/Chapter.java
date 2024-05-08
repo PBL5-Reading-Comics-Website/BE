@@ -25,9 +25,6 @@ public class Chapter {
     @Column(name = "number")
     private Integer number;
 
-    @Column(name = "data")
-    private String data;
-
     @Column(name = "comment_number")
     private Integer commentNumber;
 

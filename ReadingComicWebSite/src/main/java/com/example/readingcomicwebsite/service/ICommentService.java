@@ -13,10 +13,13 @@ public interface ICommentService {
 
     Comment update(Integer id, Comment comment);
 
-    Comment replyComment(Integer id, Comment comment);
+    Comment replyComment(Integer id, Integer mangaId, Integer userId, Comment comment);
 
     void deleteById(Integer id);
 
     Comment findById(Integer id);
 
+    Comment add(Integer mangaId, Integer userId, Comment comment);
+
+    List<Comment> findAllReplyCommentsByCommentId(Integer id);
 }
