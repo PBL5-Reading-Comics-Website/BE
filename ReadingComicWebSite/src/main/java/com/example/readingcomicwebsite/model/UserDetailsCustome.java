@@ -1,12 +1,12 @@
 package com.example.readingcomicwebsite.model;
 
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
+import java.util.*;
 public class UserDetailsCustome implements UserDetails {
     Integer id;
     String username;
@@ -44,7 +44,11 @@ public class UserDetailsCustome implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        List<SimpleGrantedAuthority> roleList = new ArrayList<>();
+        for (String role : roles) {
+            roleList.add(new SimpleGrantedAuthority(role));
+        }
+        return roleList;
     }
 
     public String getPassword() {
@@ -56,9 +60,17 @@ public class UserDetailsCustome implements UserDetails {
         return this;
     }
 
-    public UserDetailsCustome(Integer id, String... roles) {
+    public UserDetailsCustome(Integer id, String username, String... roles) {
         this.id = id;
+        this.username = username;
         this.roles = Arrays.asList(roles);
+    }
+
+    public UserDetailsCustome(Integer id, String username, String password, String role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = List.of(role);
     }
 
     public Integer getId() {

@@ -69,13 +69,15 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public Page<Manga> findAllByTagId(Integer tagId, String sortField, String sortOrder, Integer page, Integer size) {
+    public Page<Manga> findAllByTagId(Integer tagId, String sortField, String sortOrder, Integer page,
+                                         Integer size) {
         return repository.findAllByTagId(tagId, PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override
     public Manga likeManga(Integer id) {
         Manga manga = repository.findById(id).orElse(null);
+        System.out.println("no manga with id: " + id);
         if (manga == null) {
             return null;
         }
