@@ -78,10 +78,11 @@ public class AuthController {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(service.updateInfo(userDto, id)));
     }
 
-    @PutMapping("/update-password")
-    public ResponseEntity<String> updatePassword(
-            @RequestBody User user
+    @PutMapping("/{id}/update-password")
+    public ResponseEntity<ApiDataResponse> updatePassword(
+            @RequestBody UpdatePasswordRequest request,
+            @PathVariable Integer id
     ) {
-        return ResponseEntity.ok(service.updatePassword(user));
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(service.updatePassword(request, id)));
     }
 }
