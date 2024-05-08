@@ -1,13 +1,11 @@
-package org.dhv.pbl5server.common_service.model;
+package com.example.readingcomicwebsite.util;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dhv.pbl5server.common_service.annotation.JsonSnakeCaseNaming;
 
 @Data
 @NoArgsConstructor
-@JsonSnakeCaseNaming
 public class PageInfo {
     private int currentPage;
     private int nextPage;

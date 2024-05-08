@@ -1,17 +1,19 @@
 package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.Manga;
+import com.example.readingcomicwebsite.model.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IMangaService {
-    List<Manga> findAll();
+    Page<Manga> findAll(String sortField, String sortOrder, Integer page, Integer size);
 
     Manga findById(Integer id);
 
     List<Manga> findByName(String name);
 
-    Manga add(Manga manga);
+    Manga add(Manga manga, User user);
 
     Manga update(Integer id, Manga manga);
 
@@ -25,12 +27,12 @@ public interface IMangaService {
 
     List<Manga> getTop10NewestManga();
 
-    List<Manga> getMangaPublishedInFirstQuarter();
+    Page<Manga> getMangaPublishedInFirstQuarter(Integer page, Integer size, String sortField, String sortOrder);
 
-    List<Manga> getMangaPublishedInSecondQuarter();
+    Page<Manga> getMangaPublishedInSecondQuarter(Integer page, Integer size, String sortField, String sortOrder);
 
-    List<Manga> getMangaPublishedInThirdQuarter();
+    Page<Manga> getMangaPublishedInThirdQuarter(Integer page, Integer size, String sortField, String sortOrder);
 
-    List<Manga> getMangaPublishedInFourthQuarter();
+    Page<Manga> getMangaPublishedInFourthQuarter(Integer page, Integer size, String sortField, String sortOrder);
 }
 

@@ -2,8 +2,12 @@ package com.example.readingcomicwebsite.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "manga")
@@ -17,6 +21,10 @@ public class Manga {
     //name
     @Column(name = "name")
     private String name;
+
+    //publishing_company
+    @Column(name = "publishing_company")
+    private String publishingCompany;
 
     //author
     @Column(name = "author")
@@ -60,5 +68,13 @@ public class Manga {
 
     //update_user
     @Column(name = "update_user")
-    private String updateUser;
+    private Integer updateUser;
+
+    @ManyToMany
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(
+        name = "manga_tag",
+        joinColumns = @JoinColumn(name = "manga_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new HashSet<>();
 }

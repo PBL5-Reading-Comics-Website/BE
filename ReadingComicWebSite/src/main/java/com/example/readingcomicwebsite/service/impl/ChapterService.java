@@ -3,8 +3,10 @@ package com.example.readingcomicwebsite.service.impl;
 import com.example.readingcomicwebsite.model.Chapter;
 import com.example.readingcomicwebsite.repository.ChapterRepository;
 import com.example.readingcomicwebsite.service.IChapterService;
+import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +20,8 @@ public class ChapterService implements IChapterService {
     private final ChapterRepository repository;
 
     @Override
-    public List<Chapter> findAll() {
-        return repository.findAll();
+    public Page<Chapter> findAll(String sortField, String sortOrder, Integer page, Integer size) {
+        return repository.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override

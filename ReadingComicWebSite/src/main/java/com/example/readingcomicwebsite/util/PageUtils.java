@@ -1,15 +1,11 @@
-package org.dhv.pbl5server.common_service.utils;
+package com.example.readingcomicwebsite.util;
 
-import org.dhv.pbl5server.common_service.enums.AbstractEnum;
-import org.dhv.pbl5server.common_service.enums.DataSortOrder;
-import org.dhv.pbl5server.common_service.model.PageInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class PageUtils {
-
 
     /**
      * Handle make page request for query
@@ -22,7 +18,7 @@ public class PageUtils {
      */
     public static Pageable makePageRequest(String sortBy, String order, Integer page, Integer paging) {
         page = (page == null || page <= 0) ? 1 : page;
-        paging = paging == null ? 15 : (paging >= 30) ? 30 : paging;
+        paging = paging == null ? 10 : (paging >= 20) ? 20 : paging;
         Sort sort = null;
         if (CommonUtils.isNotEmptyOrNullString(order) && CommonUtils.isNotEmptyOrNullString(sortBy)) {
             String sortField = CommonUtils.convertToCamelCase(sortBy);

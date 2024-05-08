@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Integer> {
     //find all tag by manga id
-    @Query(value = "SELECT t.* FROM tag t JOIN manga m ON t.manga_id = m.id WHERE m.id = :mangaId;", nativeQuery = true)
+    @Query(value = "SELECT tag.* FROM tag WHERE tag.manga_id = :mangaId", nativeQuery = true)
     List<Tag> findAllByMangaId(@Param("mangaId") Integer mangaId);
 
     List<Tag> findAllByNameLike(String name);

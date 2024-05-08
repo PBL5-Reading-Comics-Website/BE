@@ -1,13 +1,10 @@
 package com.example.readingcomicwebsite.repository;
 
-import com.example.readingcomicwebsite.model.Following;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.example.readingcomicwebsite.model.Following;
 
-import java.util.List;
-
-@Repository
 public interface FollowingRepository extends JpaRepository<Following, Integer> {
-    // find all by user id
-    List<Following> findByUserId(Integer userId);
+    Page<Following> findByUserId(Integer userId, Pageable pageable);
 }

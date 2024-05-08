@@ -16,7 +16,7 @@ public interface ChapterRepository extends JpaRepository<Chapter, Integer> {
     Date getPublishDate(@Param("chapter") Chapter chapter);
 
     // find all chapter by manga id
-    @Query(value = "SELECT * FROM chapter WHERE manga_id = :mangaId;", nativeQuery = true)
+    @Query(value = "SELECT * FROM chapter WHERE manga_id = :mangaId", nativeQuery = true)
     List<Chapter> findAllByMangaId(@Param("mangaId") Integer mangaId);
 
     Optional<Chapter> findChapterById(Integer id);

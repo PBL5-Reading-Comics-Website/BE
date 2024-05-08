@@ -1,4 +1,4 @@
-package org.dhv.pbl5server.common_service.model;
+package com.example.readingcomicwebsite.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -4,8 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tag")
@@ -21,7 +26,8 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "manga_id")
-    private Manga manga;
+
+    @ManyToMany(mappedBy = "tags")
+    private Collection<Manga> mangas;
+
 }
