@@ -112,7 +112,8 @@ public class UserController {
     }
 
     @PutMapping("/like-manga/{id}")
-    public Object likeManga(@PathVariable Integer id) {
-        return mangaService.likeManga(id);
+    public ResponseEntity<ApiDataResponse> likeManga(@PathVariable Integer id) {
+        System.out.println("like manga with id: " + id);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.likeManga(id)));
     }
 }

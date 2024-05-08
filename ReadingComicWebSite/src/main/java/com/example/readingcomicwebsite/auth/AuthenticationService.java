@@ -53,7 +53,7 @@ public class AuthenticationService {
                 .dateOfBirth(Date.valueOf(java.time.LocalDate.now()))
                 .gender(true)
                 .registrationDate(Date.valueOf(java.time.LocalDate.now()))
-                .role(Role.ROLE_USER)
+                .role(Role.USER)
                 .build();
         repository.save(user);
 
@@ -80,7 +80,7 @@ public class AuthenticationService {
     public AuthenticationResponse login(LoginRequest request) {
         var user = repository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + request.getUsername()));
-        var jwtToken = jwtService.generateToken(new UserDetailsCustome(user.getId(), user.getRole().name()));
+        var jwtToken = jwtService.generateToken(new UserDetailsCustome(user.getId(), user.getUsername(), user.getRole().name()));
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 

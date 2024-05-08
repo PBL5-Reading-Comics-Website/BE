@@ -71,6 +71,7 @@ public class PosterController {
     public void deleteCommentById(@PathVariable Integer id) {
         commentService.deleteById(id);
     }
+
     @DeleteMapping("manga-delete/{id}")
     public ResponseEntity deleteManga(
             @PathVariable Integer id
