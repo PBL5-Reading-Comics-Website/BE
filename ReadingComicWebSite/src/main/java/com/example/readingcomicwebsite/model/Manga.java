@@ -34,6 +34,10 @@ public class Manga {
     @Column(name = "artist")
     private String artist;
 
+    //description
+    @Column(name = "description")
+    private String description;
+
     //cover_image
     @Column(name = "cover_image")
     private String coverImage;

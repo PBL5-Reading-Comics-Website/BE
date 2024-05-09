@@ -91,9 +91,7 @@ public class UserController {
     public ResponseEntity<ApiDataResponse> deleteReadingHistoryById(@PathVariable Integer id) {
         readingHistoryService.deleteById(id);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
-    }
-
-    @GetMapping("/{id}")
+    }    @GetMapping("/{id}")
     public ResponseEntity<ApiDataResponse> getUserById(@PathVariable Integer id) {
 
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findById(id)));
@@ -110,6 +108,22 @@ public class UserController {
     @GetMapping("/comment/{id}")
     public ResponseEntity<ApiDataResponse> getCommentById(@PathVariable Integer id) {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.findById(id)));
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<ApiDataResponse> addComment(@RequestParam Integer mangaId, @RequestParam Integer userId,
+                                                      @RequestBody Comment comment) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.add(mangaId, userId, comment)));
+    }
+
+    @PostMapping("/comment-reply/{id}")
+    public ResponseEntity<ApiDataResponse> replyComment(
+            @PathVariable Integer id,
+            @RequestParam Integer mangaId,
+            @RequestParam Integer userId,
+            @RequestBody Comment comment) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.replyComment(id, mangaId, userId,
+                comment)));
     }
 
     // Endpoint for deleting a comment by id
