@@ -228,4 +228,10 @@ public class PublicController {
         PageInfo pageInfo = PageUtils.makePageInfo(mangaPage);
         return ResponseEntity.ok(ApiDataResponse.success(mangaPage.getContent(), pageInfo));
     }
+
+    //get tags by manga
+    @GetMapping("/manga/{id}/tags")
+    public ResponseEntity<ApiDataResponse> getTagsByMangaId(@PathVariable Integer mangaId) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(tagService.findAllByMangaId(mangaId)));
+    }
 }
