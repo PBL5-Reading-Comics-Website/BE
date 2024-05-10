@@ -153,15 +153,8 @@ public class PublicController {
 
     // Endpoint for getting all chapters
     @GetMapping("/chapters")
-    public ResponseEntity<ApiDataResponse> getAllChapters(
-            @RequestParam(required = false) String sortField,
-            @RequestParam(required = false) String sortOrder,
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
-    ) {
-        Page<Chapter> chapterPage = chapterService.findAll(sortField, sortOrder, page, size);
-        PageInfo pageInfo = PageUtils.makePageInfo(chapterPage);
-        return ResponseEntity.ok(ApiDataResponse.success(chapterPage.getContent(), pageInfo));
+    public ResponseEntity<ApiDataResponse> getAllChapters() {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(chapterService.findAll()));
     }
 
     // Endpoint for getting a chapter by id
