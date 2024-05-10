@@ -11,6 +11,7 @@ import com.example.readingcomicwebsite.util.PageInfo;
 import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -104,9 +105,15 @@ public class PublicController {
 
     // Endpoint for getting all users
     @GetMapping("/users")
-    public ResponseEntity<ApiDataResponse> getAllUsers() {
-
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findAll()));
+    public ResponseEntity<ApiDataResponse> getAllUsers(
+            @RequestParam(required = false) String sortField,
+            @RequestParam(required = false) String sortOrder,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        Page<User> userPage = userService.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
+        PageInfo pageInfo = PageUtils.makePageInfo(userPage);
+        return ResponseEntity.ok(ApiDataResponse.success(userPage.getContent(), pageInfo));
     }
 
     // Endpoint for getting a user by id
@@ -146,15 +153,8 @@ public class PublicController {
 
     // Endpoint for getting all chapters
     @GetMapping("/chapters")
-    public ResponseEntity<ApiDataResponse> getAllChapters(
-            @RequestParam(required = false) String sortField,
-            @RequestParam(required = false) String sortOrder,
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
-    ) {
-        Page<Chapter> chapterPage = chapterService.findAll(sortField, sortOrder, page, size);
-        PageInfo pageInfo = PageUtils.makePageInfo(chapterPage);
-        return ResponseEntity.ok(ApiDataResponse.success(chapterPage.getContent(), pageInfo));
+    public ResponseEntity<ApiDataResponse> getAllChapters() {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(chapterService.findAll()));
     }
 
     // Endpoint for getting a chapter by id
@@ -168,26 +168,20 @@ public class PublicController {
     }
 
     @GetMapping("/manga/{id}/chapters")
-    public ResponseEntity<ApiDataResponse> getChaptersByMangaId(
-            @PathVariable Integer id,
-            @RequestParam(required = false) String sortField,
-            @RequestParam(required = false) String sortOrder,
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
-    ) {
+    public ResponseEntity<ApiDataResponse> getChaptersByMangaId(@PathVariable Integer id) {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(chapterService.findAllByMangaId(id)));
     }
 
     // Endpoint for getting all comments
     @GetMapping("/comments")
-    public List<Comment> getAllComments() {
-        return commentService.findAll();
+    public ResponseEntity<ApiDataResponse> getAllComments() {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.findAll()));
     }
 
     // Endpoint for getting a comment by id
     @GetMapping("/comment/{id}")
-    public Comment getCommentById(@PathVariable Integer id) {
-        return commentService.findById(id);
+    public ResponseEntity<ApiDataResponse> getCommentById(@PathVariable Integer id) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.findById(id)));
     }
 
     @GetMapping("/manga/{id}/comments")
@@ -201,23 +195,16 @@ public class PublicController {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.findAllByMangaId(id)));
     }
 
-    // Endpoint for deleting a report by id
-    @DeleteMapping("/report/{id}")
-    public void deleteReportById(@PathVariable Integer id) {
-        reportService.deleteById(id);
-    }
-
     // Endpoint for getting all tags
     @GetMapping("/tags")
     public ResponseEntity<ApiDataResponse> getAllTags() {
-
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(tagService.findAll()));
     }
 
     // Endpoint for getting a tag by id
     @GetMapping("/tag/{id}")
-    public Tag getTagById(@PathVariable Integer id) {
-        return tagService.findById(id);
+    public ResponseEntity<ApiDataResponse> getTagById(@PathVariable Integer id) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(tagService.findById(id)));
     }
 
     //get all manga by tag and name, sort by publish_at desc
@@ -233,14 +220,5 @@ public class PublicController {
         Page<Manga> mangaPage = mangaService.findByTagAndName(tagId, name, sortField, sortOrder, page, size);
         PageInfo pageInfo = PageUtils.makePageInfo(mangaPage);
         return ResponseEntity.ok(ApiDataResponse.success(mangaPage.getContent(), pageInfo));
-    }
-
-    @GetMapping("/info")
-    public ResponseEntity<ApiDataResponse> getUserInfo(@AuthenticationPrincipal User user) {
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiDataResponse.error("Authentication is required"));
-        }
-        User thisUser = userService.getInfo(user.getUsername());
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(thisUser));
     }
 }

@@ -1,6 +1,8 @@
 package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.swing.text.html.Option;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.Optional;
 
 public interface IUserService {
 
-    List<User> findAll();
+    Page<User> findAll(Pageable pageable);
 
     User findById(Integer id);
 

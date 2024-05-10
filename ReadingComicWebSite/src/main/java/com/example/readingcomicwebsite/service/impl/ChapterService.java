@@ -23,8 +23,8 @@ public class ChapterService implements IChapterService {
     private final MangaService mangaService;
 
     @Override
-    public Page<Chapter> findAll(String sortField, String sortOrder, Integer page, Integer size) {
-        return repository.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
+    public List<Chapter> findAll() {
+        return repository.findAll();
     }
 
     @Override
