@@ -10,6 +10,7 @@ import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +37,8 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public List<Manga> findByName(String name) {
-        return repository.findAllByNameLike(name);
+    public Page<Manga> findByName(String name, Pageable pageable) {
+        return repository.findAllByNameLike(name, pageable);
     }
 
     @Override
@@ -124,8 +125,19 @@ public class MangaService implements IMangaService {
     @Override
     public Page<Manga> findByTagAndName(String tag, String name, String sortField, String sortOrder, Integer page,
                                         Integer size) {
+        if (tag == null && name == null) {
+            return repository.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
+        } else if (tag == null) {
+            return repository.findAllByNameLike(
+                    "%" + name + "%",
+                    PageUtils.makePageRequest(sortField, sortOrder, page, size));
+        } else if (name == null) {
+            return repository.findAllByTagId(
+                    Integer.parseInt(tag),
+                    PageUtils.makePageRequest(sortField, sortOrder, page, size));
+        }
         return repository.findAllByTagIdAndName(
-                "%" + tag + "%",
+                tag,
                 "%" + name + "%",
                 PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
