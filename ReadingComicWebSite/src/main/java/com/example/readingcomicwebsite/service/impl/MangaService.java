@@ -1,6 +1,5 @@
 package com.example.readingcomicwebsite.service.impl;
 
-import com.example.readingcomicwebsite.auth.ErrorResponse;
 import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.model.Tag;
 import com.example.readingcomicwebsite.model.User;
@@ -10,7 +9,6 @@ import com.example.readingcomicwebsite.service.IMangaService;
 import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,10 +122,10 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public Page<Manga> findByTagAndName(Integer tagId, String name, String sortField, String sortOrder, Integer page,
+    public Page<Manga> findByTagAndName(String tag, String name, String sortField, String sortOrder, Integer page,
                                         Integer size) {
         return repository.findAllByTagIdAndName(
-                tagId,
+                "%" + tag + "%",
                 "%" + name + "%",
                 PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
@@ -145,5 +143,10 @@ public class MangaService implements IMangaService {
         mangaDb.getTags().add(tagDb);
         repository.save(mangaDb);
         return tagRepository.save(tag);
+    }
+
+    @Override
+    public List<Manga> findByUserId(Integer userId) {
+        return repository.findAllByUpdateUser(userId);
     }
 }

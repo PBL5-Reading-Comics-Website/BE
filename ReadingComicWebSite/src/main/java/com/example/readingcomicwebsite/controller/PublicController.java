@@ -223,14 +223,14 @@ public class PublicController {
     //get all manga by tag and name, sort by publish_at desc
     @GetMapping("/manga")
     public ResponseEntity<ApiDataResponse> getMangaByTagAndName(
-            @RequestParam(required = false) Integer tagId,
+            @RequestParam(required = false) String tag,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String sortField,
             @RequestParam(required = false) String sortOrder,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ) {
-        Page<Manga> mangaPage = mangaService.findByTagAndName(tagId, name, sortField, sortOrder, page, size);
+        Page<Manga> mangaPage = mangaService.findByTagAndName(tag, name, sortField, sortOrder, page, size);
         PageInfo pageInfo = PageUtils.makePageInfo(mangaPage);
         return ResponseEntity.ok(ApiDataResponse.success(mangaPage.getContent(), pageInfo));
     }
@@ -243,4 +243,6 @@ public class PublicController {
         User thisUser = userService.getInfo(user.getUsername());
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(thisUser));
     }
+
+
 }

@@ -80,4 +80,12 @@ public class PosterController {
         mangaService.deleteById(id);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
     }
+
+    // get all manga you have created
+    @GetMapping("/manga")
+    public ResponseEntity<ApiDataResponse> getMangaByUser(
+            @RequestParam Integer userId
+    ) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.findByUserId(userId)));
+    }
 }
