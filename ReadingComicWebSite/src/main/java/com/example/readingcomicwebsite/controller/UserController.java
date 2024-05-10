@@ -154,4 +154,6 @@ public class UserController {
         report.setStatus(StatusUtil.PENDING);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(reportService.add(report)));
     }
+
+    // request to be a poster
 }

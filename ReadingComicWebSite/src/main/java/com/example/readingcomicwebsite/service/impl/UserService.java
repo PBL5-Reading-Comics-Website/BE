@@ -5,6 +5,8 @@ import com.example.readingcomicwebsite.repository.UserRepository;
 import com.example.readingcomicwebsite.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +18,8 @@ public class UserService implements IUserService {
     private final UserRepository repository;
 
     @Override
-    public List<User> findAll() {
-        return repository.findAll();
+    public Page<User> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
