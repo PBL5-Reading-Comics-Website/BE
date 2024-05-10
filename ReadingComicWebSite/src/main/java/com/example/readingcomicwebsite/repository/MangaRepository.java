@@ -18,7 +18,7 @@ public interface MangaRepository extends JpaRepository<Manga, Integer> {
             nativeQuery = true)
     Page<Manga> findAllByTagId(@Param("tagId") Integer tagId, Pageable pageable);
 
-    List<Manga> findAllByNameLike(String name);
+    Page<Manga> findAllByNameLike(String name, Pageable pageable);
 
     List<Manga> findTop10ByOrderByPublishAtDesc();
 
@@ -34,7 +34,7 @@ public interface MangaRepository extends JpaRepository<Manga, Integer> {
     @Query("SELECT m FROM Manga m WHERE MONTH(m.publishAt) IN (10, 11, 12)")
     Page<Manga> findAllPublishedInFourthQuarter(Pageable pageable);
 
-    @Query(value = "SELECT manga.* FROM manga, tag WHERE manga.name LIKE :name AND tag.name = :tag", nativeQuery = true)
+    @Query(value = "SELECT distinct manga.* FROM manga, tag WHERE manga.name LIKE :name OR tag.name = :tag", nativeQuery = true)
     Page<Manga> findAllByTagIdAndName(@Param("tag") String tag, @Param("name") String name, Pageable pageable);
 
     List<Manga> findAllByUpdateUser(Integer userId);
