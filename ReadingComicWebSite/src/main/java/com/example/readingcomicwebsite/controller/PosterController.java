@@ -56,11 +56,11 @@ public class PosterController {
     @PostMapping("/manga")
     public ResponseEntity<ApiDataResponse> createManga(
             @RequestBody MangaDto mangaDto,
-            @RequestBody User user
+            @RequestParam Integer userId
     ) {
         Manga manga = new Manga();
         BeanUtils.copyProperties(mangaDto, manga);
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.add(manga, user)));
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.add(manga, userId)));
     }
 
     @PutMapping("/manga/{id}")

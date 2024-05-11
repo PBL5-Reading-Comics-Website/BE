@@ -15,7 +15,7 @@ public interface IMangaService {
 
     Page<Manga> findByName(String name, Pageable pageable);
 
-    Manga add(Manga manga, User user);
+    Manga add(Manga manga, Integer userId);
 
     Manga update(Integer id, Manga manga);
 
