@@ -14,12 +14,12 @@ CREATE TABLE manga (
     publishing_company VARCHAR(255) NOT NULL DEFAULT 'Unknown',
     author VARCHAR(255) NOT NULL DEFAULT '',
     artist VARCHAR(255) NOT NULL DEFAULT '',
-    description LONGTEXT NOT NULL,
+    description LONGTEXT NULL,
     status VARCHAR(255) NOT NULL DEFAULT 'ONGOING',
     reading_status VARCHAR(255) NOT NULL DEFAULT '',
-    view_number INT NOT NULL DEFAULT 0,
-    favourite_number INT NOT NULL DEFAULT 0,
-    comment_number INT NOT NULL DEFAULT 0,
+    view_number INT DEFAULT 0,
+    favourite_number INT DEFAULT 0,
+    comment_number INT DEFAULT 0,
     publish_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     update_user_id INT,
@@ -253,6 +253,7 @@ CALL InsertNewChapter('BE BLUES ~Ao ni Nare~', 'Vol. 1 Ch. 1');
 CALL InsertNewChapter('BE BLUES ~Ao ni Nare~', 'Vol. 1 Ch. 2');
 CALL InsertNewChapter('Arakure Ojousama wa Monmon Shiteiru', 'Vol. 1 Ch. 1');
 CALL InsertNewChapter('Arakure Ojousama wa Monmon Shiteiru', 'Vol. 1 Ch. 2');
+CALL InsertNewChapter('Arakure Ojousama wa Monmon Shiteiru', 'Vol. 1 Ch. 3');
 
 CALL InsertChapterImage(1, '00_m0kuuz', '00_m0kuuz', 'Vol. 1 Ch. 1', 'BE BLUES ~Ao ni Nare~');
 CALL InsertChapterImage(1, '01_lt8uan', '01_lt8uan', 'Vol. 1 Ch. 1', 'BE BLUES ~Ao ni Nare~');

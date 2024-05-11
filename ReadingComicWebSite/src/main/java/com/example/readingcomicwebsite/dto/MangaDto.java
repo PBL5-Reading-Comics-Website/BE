@@ -12,7 +12,9 @@ import javax.persistence.Column;
 @NoArgsConstructor
 public class MangaDto {
     private String name;
-    private String coverImage;
+    private String publishingCompany;
     private String author;
     private String artist;
+    private String description;
+    private String coverImage;
 }

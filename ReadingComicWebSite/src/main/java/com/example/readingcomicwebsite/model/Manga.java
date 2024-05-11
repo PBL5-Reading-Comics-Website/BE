@@ -1,5 +1,6 @@
 package com.example.readingcomicwebsite.model;
 
+import com.example.readingcomicwebsite.util.StatusUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -43,24 +44,24 @@ public class Manga {
     private String coverImage;
 
     //status
-    @Column(name = "status")
-    private String status;
+    @Column(name = "status", nullable = false)
+    private String status = StatusUtil.ONGOING.name();
 
     //reading_status
-    @Column(name = "reading_status")
-    private String readingStatus;
+    @Column(name = "reading_status", nullable = false)
+    private String readingStatus = "READING";
 
     //view_number
-    @Column(name = "view_number")
-    private Integer viewNumber;
+    @Column(name = "view_number", nullable = false)
+    private Integer viewNumber = 0;
 
     //favourite_number
-    @Column(name = "favourite_number")
-    private Integer favouriteNumber;
+    @Column(name = "favourite_number", nullable = false)
+    private Integer favouriteNumber = 0;
 
     //comment_number
-    @Column(name = "comment_number")
-    private Integer commentNumber;
+    @Column(name = "comment_number", nullable = false)
+    private Integer commentNumber = 0;
 
     //publish_at
     @Column(name = "publish_at")

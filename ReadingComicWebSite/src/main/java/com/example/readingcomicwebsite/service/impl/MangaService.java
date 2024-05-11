@@ -43,7 +43,7 @@ public class MangaService implements IMangaService {
 
     @Override
     @Transactional
-    public Manga add(Manga manga, User user) {
+    public Manga add(Manga manga, Integer userId) {
         if (manga.getName() == null || manga.getName().isEmpty()) {
             return null;
         } else if (manga.getAuthor() == null || manga.getAuthor().isEmpty()) {
@@ -51,7 +51,7 @@ public class MangaService implements IMangaService {
         } else if (manga.getArtist() == null || manga.getArtist().isEmpty()) {
             return null;
         }
-        manga.setUpdateUser(user.getId());
+        manga.setUpdateUser(userId);
         return repository.save(manga);
     }
 
