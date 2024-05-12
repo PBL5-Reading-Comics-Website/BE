@@ -16,7 +16,7 @@ CREATE TABLE manga (
     artist VARCHAR(255) NOT NULL DEFAULT '',
     description LONGTEXT NULL,
     status VARCHAR(255) NOT NULL DEFAULT 'ONGOING',
-    reading_status VARCHAR(255) NOT NULL DEFAULT '',
+    reading_status VARCHAR(255) DEFAULT 'READING' NOT NULL,
     view_number INT DEFAULT 0,
     favourite_number INT DEFAULT 0,
     comment_number INT DEFAULT 0,
