@@ -5,6 +5,7 @@ import com.example.readingcomicwebsite.model.Tag;
 import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.repository.MangaRepository;
 import com.example.readingcomicwebsite.repository.TagRepository;
+import com.example.readingcomicwebsite.repository.UserRepository;
 import com.example.readingcomicwebsite.service.IMangaService;
 import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 public class MangaService implements IMangaService {
     private final MangaRepository repository;
     private final TagRepository tagRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Page<Manga> findAll(String sortField, String sortOrder, Integer page, Integer size) {
@@ -77,14 +79,35 @@ public class MangaService implements IMangaService {
     }
 
     @Override
-    public Manga likeManga(Integer id) {
-        Manga manga = repository.findById(id).orElse(null);
-        System.out.println("no manga with id: " + id);
-        if (manga == null) {
+    public Manga likeManga(Integer id, Integer userId) {
+        Manga mangaDb = repository.findById(id).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if (mangaDb == null || user == null) {
             return null;
         }
-        manga.setFavouriteNumber(manga.getFavouriteNumber() + 1);
-        return repository.save(manga);
+        for (Manga manga : user.getLikedManga()) {
+            if (manga == mangaDb) {
+                throw new Error("Manga already liked");
+            }
+        }
+        user.getLikedManga().add(mangaDb);
+        mangaDb.setFavouriteNumber(mangaDb.getFavouriteNumber() + 1);
+        return repository.save(mangaDb);
+    }
+
+    @Override
+    public Manga dislikeManga(Integer id, Integer userId) {
+        Manga mangaDb = repository.findById(id).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if (mangaDb == null || user == null) {
+            return null;
+        }
+        if (isLikedManga(id, userId)) {
+                user.getLikedManga().remove(mangaDb);
+                mangaDb.setFavouriteNumber(mangaDb.getFavouriteNumber() - 1);
+                return repository.save(mangaDb);
+        }
+        throw new Error("Manga not liked");
     }
 
     @Override
@@ -160,5 +183,18 @@ public class MangaService implements IMangaService {
     @Override
     public List<Manga> findByUserId(Integer userId) {
         return repository.findAllByUpdateUser(userId);
+    }
+
+    @Override
+    public Boolean isLikedManga(Integer mangaId, Integer userId) {
+        Manga mangaDb = repository.findById(mangaId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if (mangaDb == null || user == null) {
+            return null;
+        }
+        if (user.getLikedManga().contains(mangaDb)) {
+            return true;
+        }
+        return false;
     }
 }
