@@ -134,8 +134,21 @@ public class UserController {
     }
 
     @PutMapping("/like-manga/{id}")
-    public ResponseEntity<ApiDataResponse> likeManga(@PathVariable Integer id) {
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.likeManga(id)));
+    public ResponseEntity<ApiDataResponse> likeManga(
+            @PathVariable Integer id,
+            @RequestParam Integer userId
+    ) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.likeManga(id, userId)));
+    }
+
+    //dislike manga
+    @PutMapping("/dislike-manga/{id}")
+    public ResponseEntity<ApiDataResponse> dislikeManga(
+            @PathVariable Integer id,
+            @RequestParam Integer userId
+    ) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.dislikeManga(id,
+                userId)));
     }
 
     //update user image
@@ -155,5 +168,12 @@ public class UserController {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(reportService.add(report)));
     }
 
-    // request to be a poster
+    //isLikedManga
+    @GetMapping("/is-liked-manga")
+    public ResponseEntity<ApiDataResponse> isLikedManga(
+            @RequestParam Integer mangaId,
+            @RequestParam Integer userId
+    ) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.isLikedManga(mangaId, userId)));
+    }
 }

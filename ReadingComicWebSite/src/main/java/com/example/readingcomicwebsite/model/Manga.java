@@ -82,4 +82,13 @@ public class Manga {
         joinColumns = @JoinColumn(name = "manga_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
+
+    //liked user
+    @ManyToMany
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(
+        name = "manga_liked_user",
+        joinColumns = @JoinColumn(name = "manga_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> likedUsers = new HashSet<>();
 }

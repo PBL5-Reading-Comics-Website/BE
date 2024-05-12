@@ -64,4 +64,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //liked manga
+    @ManyToMany
+    @JoinTable(
+            name = "user_manga",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "manga_id")
+    )
+    private List<Manga> likedManga;
 }

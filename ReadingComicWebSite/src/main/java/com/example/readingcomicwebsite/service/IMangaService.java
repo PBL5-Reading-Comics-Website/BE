@@ -2,7 +2,6 @@ package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.model.Tag;
-import com.example.readingcomicwebsite.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,7 +22,9 @@ public interface IMangaService {
 
     Page<Manga> findAllByTagId(Integer tagId, String sortField, String sortOrder, Integer page, Integer size);
 
-    Manga likeManga(Integer id);
+    Manga likeManga(Integer id, Integer userId);
+
+    Manga dislikeManga(Integer id, Integer userId);
 
     Manga viewManga(Integer id);
 
@@ -43,5 +44,7 @@ public interface IMangaService {
     Tag addTag(Integer mangaId, Integer tagId);
 
     Object findByUserId(Integer userId);
+
+    Boolean isLikedManga(Integer mangaId, Integer userId);
 }
 
