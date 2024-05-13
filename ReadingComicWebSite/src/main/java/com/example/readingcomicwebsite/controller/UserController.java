@@ -176,4 +176,12 @@ public class UserController {
     ) {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.isLikedManga(mangaId, userId)));
     }
+
+    // get all read manga in reading history
+    @GetMapping("/read-manga")
+    public ResponseEntity<ApiDataResponse> getReadManga(
+            @RequestParam Integer userId
+    ) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(readingHistoryService.getReadManga(userId)));
+    }
 }
