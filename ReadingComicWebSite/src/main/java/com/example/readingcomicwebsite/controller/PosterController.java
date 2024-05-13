@@ -60,6 +60,7 @@ public class PosterController {
     ) {
         Manga manga = new Manga();
         BeanUtils.copyProperties(mangaDto, manga);
+        System.out.println(manga);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.add(manga, userId)));
     }
 
