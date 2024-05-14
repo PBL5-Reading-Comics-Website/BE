@@ -2,9 +2,16 @@ package com.example.readingcomicwebsite.controller;
 
 import com.example.readingcomicwebsite.auth.ApiDataResponse;
 import com.example.readingcomicwebsite.model.Comment;
+import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.model.Report;
+import com.example.readingcomicwebsite.model.Waiting;
 import com.example.readingcomicwebsite.service.*;
+import com.example.readingcomicwebsite.service.impl.WaitingService;
+import com.example.readingcomicwebsite.util.PageInfo;
+import com.example.readingcomicwebsite.util.PageUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +30,7 @@ public class AdminController {
     private final ITagService tagService;
     private final IFollowingService followingService;
     private final IReadingHistoryService readingHistoryService;
+    private final WaitingService waitingService;
 
     // Endpoint for deleting a user by id
     @DeleteMapping("/user/{id}")
@@ -104,5 +112,29 @@ public class AdminController {
     @GetMapping("/comments/reply/{id}")
     public ResponseEntity<ApiDataResponse> findAllReplyCommentsByCommentId(@PathVariable Integer id) {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(commentService.findAllReplyCommentsByCommentId(id)));
+    }
+
+    // get all waiting users
+    @GetMapping("/waitings")
+    public ResponseEntity<ApiDataResponse> getAllWaitings(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+        Page<Waiting> waitingPage = waitingService.findAll(page, size);
+        PageInfo pageInfo = PageUtils.makePageInfo(waitingPage);
+        return ResponseEntity.ok(ApiDataResponse.success(waitingPage.getContent(), pageInfo));
+    }
+
+    // accept waiting user
+    @PutMapping("/waiting/accept")
+    public ResponseEntity<ApiDataResponse> acceptWaiting(@RequestParam Integer id) {
+        waitingService.acceptWaiting(id);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
+    }
+
+    // reject waiting user
+    @PutMapping("/waiting/reject")
+    public ResponseEntity<ApiDataResponse> rejectWaiting(@RequestParam Integer id) {
+        waitingService.rejectWaiting(id);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
     }
 }

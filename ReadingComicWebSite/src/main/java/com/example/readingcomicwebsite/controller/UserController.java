@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.readingcomicwebsite.auth.ApiDataResponse;
+
+import com.example.readingcomicwebsite.model.*;
+import com.example.readingcomicwebsite.service.*;
+import com.example.readingcomicwebsite.service.impl.WaitingService;
 import com.example.readingcomicwebsite.dto.AvatarDto;
 import com.example.readingcomicwebsite.model.Comment;
 import com.example.readingcomicwebsite.model.Following;
@@ -48,6 +52,7 @@ public class UserController {
     private final ITagService tagService;
     private final IFollowingService followingService;
     private final IReadingHistoryService readingHistoryService;
+    private final WaitingService waitingService;
 
     @GetMapping("/followings")
     public ResponseEntity<ApiDataResponse> getAllFollowings(
@@ -115,7 +120,9 @@ public class UserController {
     public ResponseEntity<ApiDataResponse> deleteReadingHistoryById(@PathVariable Integer id) {
         readingHistoryService.deleteById(id);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
-    }    @GetMapping("/{id}")
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<ApiDataResponse> getUserById(@PathVariable Integer id) {
 
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.findById(id)));
@@ -207,5 +214,13 @@ public class UserController {
             @RequestParam Integer userId
     ) {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(readingHistoryService.getReadManga(userId)));
+    }
+
+    // request to become a poster
+    @PostMapping("/waiting")
+    public ResponseEntity<ApiDataResponse> requestToBecomePoster(@RequestParam Integer userId) {
+        Waiting waiting = new Waiting();
+        waiting.setUser(userService.findById(userId));
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(waitingService.add(waiting)));
     }
 }
