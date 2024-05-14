@@ -135,6 +135,14 @@ CREATE TABLE following (
         REFERENCES manga (id),
     PRIMARY KEY (id)
 );
+
+CREATE TABLE waiting (
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id)
+        REFERENCES user (id),
+    PRIMARY KEY (id)
+);
   
 INSERT INTO comic_reading.`role` (name) VALUES ('ADMIN');
 INSERT INTO comic_reading.`role` (name) VALUES ('USER');

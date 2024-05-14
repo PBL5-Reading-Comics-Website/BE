@@ -61,6 +61,7 @@ public class User {
     @Column(name = "registration_date")
     private Date registrationDate;
 
+    @JoinColumn(name = "role_id")
     @Enumerated(EnumType.STRING)
     private Role role;
 
