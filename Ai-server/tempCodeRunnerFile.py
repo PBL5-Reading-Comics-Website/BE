@@ -2,7 +2,7 @@ import mysql.connector
 import numpy as np
 import pandas as pd
 from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -24,16 +24,13 @@ def get_manga_data():
         cursor = connection.cursor()
         query = """
             SELECT m.id, m.name, t.name AS tag, 
-            GREATEST(m.view_number, 1) AS views 
+                   GREATEST(m.view_number, 1) AS views 
             FROM manga m
             LEFT JOIN tag t ON m.id = t.manga_id;
             """
         cursor.execute(query)
         data = cursor.fetchall()
         df = pd.DataFrame(data, columns=["id", "Name", "tag", "Views"])
-
-        # Handle None values in "tag" column
-        df["tag"] = df["tag"].fillna("") 
 
         # Apply TF-IDF vectorization
         vectorizer = TfidfVectorizer()
@@ -154,7 +151,6 @@ def get_recommendations(user_id, top_n=10):
 
 
 @app.route("/recommendations", methods=["GET"])
-@cross_origin()
 def get_user_recommendations():
     """Endpoint to get manga recommendations for a user."""
     user_id = request.args.get("userId")
