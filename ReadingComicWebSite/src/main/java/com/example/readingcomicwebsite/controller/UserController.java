@@ -1,16 +1,43 @@
 package com.example.readingcomicwebsite.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.readingcomicwebsite.auth.ApiDataResponse;
+
 import com.example.readingcomicwebsite.model.*;
 import com.example.readingcomicwebsite.service.*;
 import com.example.readingcomicwebsite.service.impl.WaitingService;
+import com.example.readingcomicwebsite.dto.AvatarDto;
+import com.example.readingcomicwebsite.model.Comment;
+import com.example.readingcomicwebsite.model.Following;
+import com.example.readingcomicwebsite.model.Manga;
+import com.example.readingcomicwebsite.model.ReadingHistory;
+import com.example.readingcomicwebsite.model.Report;
+import com.example.readingcomicwebsite.model.User;
+import com.example.readingcomicwebsite.service.IChapterService;
+import com.example.readingcomicwebsite.service.ICommentService;
+import com.example.readingcomicwebsite.service.IFollowingService;
+import com.example.readingcomicwebsite.service.IMangaService;
+import com.example.readingcomicwebsite.service.IReadingHistoryService;
+import com.example.readingcomicwebsite.service.IReportService;
+import com.example.readingcomicwebsite.service.ITagService;
+import com.example.readingcomicwebsite.service.IUserService;
 import com.example.readingcomicwebsite.util.PageInfo;
 import com.example.readingcomicwebsite.util.PageUtils;
 import com.example.readingcomicwebsite.util.StatusUtil;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -157,9 +184,9 @@ public class UserController {
 
     //update user image
     @PutMapping("/update-image/{id}")
-    public ResponseEntity<ApiDataResponse> updateImage(@PathVariable Integer id, @RequestParam String imageUrl) {
+    public ResponseEntity<ApiDataResponse> updateImage(@PathVariable Integer id, @RequestBody AvatarDto avatarDto) {
         User user = userService.findById(id);
-        user.setAvatar(imageUrl);
+        user.setAvatar(avatarDto.getImageUrl());
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.update(id, user)));
     }
 
