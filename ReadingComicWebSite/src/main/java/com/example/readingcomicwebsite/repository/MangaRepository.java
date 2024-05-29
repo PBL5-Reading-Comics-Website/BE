@@ -13,10 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface MangaRepository extends JpaRepository<Manga, Integer> {
-    //find all manga by tag id
-    @Query(value = "SELECT manga.* FROM manga INNER JOIN tag ON manga.id = tag.manga_id WHERE tag.id = :tagId",
-            nativeQuery = true)
-    Page<Manga> findAllByTagId(@Param("tagId") Integer tagId, Pageable pageable);
 
     Page<Manga> findAllByNameLike(String name, Pageable pageable);
 

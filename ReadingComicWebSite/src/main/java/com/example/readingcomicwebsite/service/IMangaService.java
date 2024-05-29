@@ -20,8 +20,6 @@ public interface IMangaService {
 
     void deleteById(Integer id);
 
-    Page<Manga> findAllByTagId(Integer tagId, String sortField, String sortOrder, Integer page, Integer size);
-
     Manga likeManga(Integer id, Integer userId);
 
     Manga dislikeManga(Integer id, Integer userId);

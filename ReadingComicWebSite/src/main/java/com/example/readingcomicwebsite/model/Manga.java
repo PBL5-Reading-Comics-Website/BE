@@ -1,6 +1,9 @@
 package com.example.readingcomicwebsite.model;
 
 import com.example.readingcomicwebsite.util.StatusUtil;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -78,17 +81,23 @@ public class Manga {
     @ManyToMany
     @Fetch(FetchMode.JOIN)
     @JoinTable(
-        name = "manga_tag",
-        joinColumns = @JoinColumn(name = "manga_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+            name = "manga_tag",
+            joinColumns = @JoinColumn(name = "manga_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JsonBackReference // This annotation is needed for JSON serialization
     private Set<Tag> tags = new HashSet<>();
 
     //liked user
     @ManyToMany
     @Fetch(FetchMode.JOIN)
     @JoinTable(
-        name = "manga_liked_user",
-        joinColumns = @JoinColumn(name = "manga_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
+            name = "manga_liked_user",
+            joinColumns = @JoinColumn(name = "manga_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> likedUsers = new HashSet<>();
+
+    @JsonIgnore
+    public Set<Tag> getTags() {
+        return tags;
+    }
 }

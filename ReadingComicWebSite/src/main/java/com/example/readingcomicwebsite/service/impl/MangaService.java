@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -46,13 +47,18 @@ public class MangaService implements IMangaService {
     @Override
     @Transactional
     public Manga add(Manga manga, Integer userId) {
-                    if (manga.getName() == null || manga.getName().isEmpty()) {
+        if (manga.getName() == null || manga.getName().isEmpty()) {
             return null;
         } else if (manga.getAuthor() == null || manga.getAuthor().isEmpty()) {
             return null;
         } else if (manga.getArtist() == null || manga.getArtist().isEmpty()) {
             return null;
         }
+        System.out.print("Manga tags: ");
+        for (Tag tag : manga.getTags()) {
+            System.out.print(tag.getName() + ", ");
+        }
+        System.out.println("");
         System.out.println("Name: " + manga.getName());
         manga.setUpdateUser(userId);
         return repository.save(manga);
@@ -71,12 +77,6 @@ public class MangaService implements IMangaService {
     @Override
     public void deleteById(Integer id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public Page<Manga> findAllByTagId(Integer tagId, String sortField, String sortOrder, Integer page,
-                                      Integer size) {
-        return repository.findAllByTagId(tagId, PageUtils.makePageRequest(sortField, sortOrder, page, size));
     }
 
     @Override
@@ -104,9 +104,9 @@ public class MangaService implements IMangaService {
             return null;
         }
         if (isLikedManga(id, userId)) {
-                user.getLikedManga().remove(mangaDb);
-                mangaDb.setFavouriteNumber(mangaDb.getFavouriteNumber() - 1);
-                return repository.save(mangaDb);
+            user.getLikedManga().remove(mangaDb);
+            mangaDb.setFavouriteNumber(mangaDb.getFavouriteNumber() - 1);
+            return repository.save(mangaDb);
         }
         throw new Error("Manga not liked");
     }
@@ -156,9 +156,10 @@ public class MangaService implements IMangaService {
                     "%" + name + "%",
                     PageUtils.makePageRequest(sortField, sortOrder, page, size));
         } else if (name == null) {
-            return repository.findAllByTagId(
-                    Integer.parseInt(tag),
-                    PageUtils.makePageRequest(sortField, sortOrder, page, size));
+//            return repository.findAllByTagId(
+//                    Integer.parseInt(tag),
+//                    PageUtils.makePageRequest(sortField, sortOrder, page, size));
+            return null;
         }
         return repository.findAllByTagIdAndName(
                 tag,
@@ -167,18 +168,23 @@ public class MangaService implements IMangaService {
     }
 
     @Override
+    @Transactional
     public Tag addTag(Integer mangaId, Integer tagId) {
         Manga mangaDb = repository.findById(mangaId).orElse(null);
         Tag tagDb = tagRepository.findById(tagId).orElse(null);
+
         if (mangaDb == null || tagDb == null) {
             return null;
         }
-        Tag tag = new Tag();
-        tag.setName(tagDb.getName());
-        tag.setMangas(List.of(mangaDb));
+
+        // Add the tag to the manga's tags collection
         mangaDb.getTags().add(tagDb);
+
+        // Save the Manga to update the relationship in the database
         repository.save(mangaDb);
-        return tagRepository.save(tag);
+
+        // Return the added Tag (not the Manga)
+        return tagDb;
     }
 
     @Override

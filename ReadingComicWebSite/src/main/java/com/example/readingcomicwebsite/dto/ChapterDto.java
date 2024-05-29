@@ -1,6 +1,9 @@
 package com.example.readingcomicwebsite.dto;
 
+import com.example.readingcomicwebsite.model.Tag;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Builder
