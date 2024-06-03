@@ -2,6 +2,7 @@ package com.example.readingcomicwebsite.service.impl;
 
 import com.example.readingcomicwebsite.dto.ChapterDto;
 import com.example.readingcomicwebsite.model.Chapter;
+import com.example.readingcomicwebsite.model.Image;
 import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.repository.ChapterRepository;
 import com.example.readingcomicwebsite.service.IChapterService;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class ChapterService implements IChapterService {
     private final ChapterRepository repository;
     private final MangaService mangaService;
+    private final ImageService imageService;
 
     @Override
     public List<Chapter> findAll() {
@@ -41,7 +43,12 @@ public class ChapterService implements IChapterService {
         Chapter chapter = new Chapter();
         chapter.setManga(manga);
         BeanUtils.copyProperties(chapterDto, chapter);
-        return repository.save(chapter);
+        List<String> images = chapterDto.getImages();
+        repository.save(chapter);
+        for (String image : images) {
+            imageService.add(new Image(image, chapter));
+        }
+        return chapter;
     }
 
     @Override

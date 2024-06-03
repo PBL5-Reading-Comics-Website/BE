@@ -26,7 +26,7 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public void save(Image image) {
+    public void add(Image image) {
         repository.save(image);
     }
 

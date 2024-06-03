@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Following {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

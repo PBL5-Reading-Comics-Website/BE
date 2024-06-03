@@ -53,7 +53,7 @@ public class CloudinaryController {
                 (String) result.get("public_id"),
                 chapter
         );
-        imageService.save(image);
+        imageService.add(image);
         return ResponseEntity.ok().body((String) result.get("url"));
     }
 
