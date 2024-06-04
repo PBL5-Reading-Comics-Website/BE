@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -61,6 +63,8 @@ public class MangaService implements IMangaService {
         System.out.println("");
         System.out.println("Name: " + manga.getName());
         manga.setUpdateUser(userId);
+        manga.setPublishAt(Instant.now());
+        manga.setUpdateAt(manga.getUpdateAt() == null ? manga.getPublishAt() : manga.getUpdateAt());
         return repository.save(manga);
     }
 

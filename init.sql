@@ -20,7 +20,7 @@ CREATE TABLE manga (
     view_number INT DEFAULT 0,
     favourite_number INT DEFAULT 0,
     comment_number INT DEFAULT 0,
-    publish_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    publish_at TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     update_user_id INT,
     PRIMARY KEY (id)
