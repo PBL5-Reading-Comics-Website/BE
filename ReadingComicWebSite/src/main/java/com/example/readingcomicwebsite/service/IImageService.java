@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IImageService {
     List<Image> list(Chapter chapter);
     Optional<Image> getOne(Integer id);
-    void save(Image image);
+    void add(Image image);
     void delete(Integer id);
     boolean isExist(Integer id);
 }

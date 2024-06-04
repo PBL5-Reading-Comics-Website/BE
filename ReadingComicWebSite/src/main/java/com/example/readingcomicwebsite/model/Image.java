@@ -34,4 +34,11 @@ public class Image {
         this.imageId = imageId;
         this.chapter = chapter;
     }
+
+    public Image(String name, Chapter chapter) {
+        this.name = name;
+        this.imageId = name;
+        this.imageUrl = name;
+        this.chapter = chapter;
+    }
 }

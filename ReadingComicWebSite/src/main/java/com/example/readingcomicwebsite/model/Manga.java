@@ -10,6 +10,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,11 +69,11 @@ public class Manga {
 
     //publish_at
     @Column(name = "publish_at")
-    private String publishAt;
+    private Instant publishAt;
 
     //update_at
     @Column(name = "update_at")
-    private String updateAt;
+    private Instant updateAt;
 
     //update_user
     @Column(name = "update_user")

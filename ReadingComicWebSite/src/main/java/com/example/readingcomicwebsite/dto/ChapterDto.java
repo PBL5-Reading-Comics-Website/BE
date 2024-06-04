@@ -14,4 +14,5 @@ import java.util.List;
 public class ChapterDto {
     private String name;
     private Integer number;
+    private List<String> images;
 }
