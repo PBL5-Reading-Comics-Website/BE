@@ -1,13 +1,8 @@
 import mysql.connector
 import numpy as np
 import pandas as pd
-from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
-app = Flask(__name__)
-CORS(app)
 
 db_config = {
     "host": "localhost",
@@ -15,7 +10,6 @@ db_config = {
     "password": "",
     "database": "comic_reading",
 }
-
 
 def get_manga_data():
     """Fetches manga data (excluding cover_image) for recommendations."""
@@ -26,8 +20,7 @@ def get_manga_data():
             SELECT m.id, m.name, t.name AS tag, 
             GREATEST(m.view_number, 1) AS views 
             FROM manga m
-            JOIN manga_tag mt ON m.id = mt.manga_id
-            LEFT JOIN tag t ON mt.tag_id = t.id;
+            LEFT JOIN tag t ON m.id = t.manga_id;
             """
         cursor.execute(query)
         data = cursor.fetchall()
@@ -58,7 +51,6 @@ def get_manga_data():
             cursor.close()
             connection.close()
 
-
 def get_manga_cover_images(manga_ids):
     """Fetches cover image URLs for a list of manga IDs."""
     try:
@@ -82,7 +74,6 @@ def get_manga_cover_images(manga_ids):
         if connection.is_connected():
             cursor.close()
             connection.close()
-
 
 def get_recommendations(user_id, top_n=10):
     """Recommends mangas based on user's reading history and tag similarity."""
@@ -143,38 +134,21 @@ def get_recommendations(user_id, top_n=10):
 
         # Get recommended mangas with scores, names, and image URLs
         recommended_mangas = []
-        image_urls = get_manga_cover_images(recommended_manga_ids)
+        image_urls = get_manga_cover_images(recommended_manga_ids)  # Fetch image URLs
         for manga_id in recommended_manga_ids[:top_n]:
             score = similarity_scores[0][
                 details_df[details_df["id"] == manga_id].index[0]
             ]
             name = details_df[details_df["id"] == manga_id]["Name"].values[0]
-            image_url = image_urls.get(manga_id, "") 
+            image_url = image_urls.get(manga_id, "")  # Get image URL from dictionary
             recommended_mangas.append([manga_id, name, score, image_url])
         return recommended_mangas
 
 
-@app.route("/recommendations", methods=["GET"])
-@cross_origin()
-def get_user_recommendations():
-    """Endpoint to get manga recommendations for a user."""
-    user_id = request.args.get("userId")
-    if not user_id:
-        return jsonify({"error": "Missing userId parameter"}), 400
-    try:
-        user_id = int(user_id)
-    except ValueError:
-        return jsonify({"error": "Invalid userId parameter"}), 400
+if __name__ == "__main__":
+    user_id = 1  # Example user ID
     recommendations = get_recommendations(user_id, top_n=10)
 
-    # Format recommendations for JSON response
-    formatted_recommendations = [
-        {"id": manga_id, "name": name, "score": f"{score:.4f}", "imageUrl": image_url}
-        for manga_id, name, score, image_url in recommendations
-    ]
-    print(formatted_recommendations)
-    return jsonify({"recommendations": formatted_recommendations})
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    # Format recommendations for printing
+    for manga_id, name, score, image_url in recommendations:
+        print(f"Manga ID: {manga_id}, Name: {name}")
