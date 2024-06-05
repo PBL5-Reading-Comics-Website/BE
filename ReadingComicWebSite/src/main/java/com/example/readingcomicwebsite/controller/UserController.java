@@ -1,5 +1,7 @@
 package com.example.readingcomicwebsite.controller;
 
+import com.example.readingcomicwebsite.dto.ReportDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -192,10 +194,10 @@ public class UserController {
 
     // create report the comment (just report comment, not for manga)
     @PostMapping("/report")
-    public ResponseEntity<ApiDataResponse> createReport(@RequestBody String content) {
+    public ResponseEntity<ApiDataResponse> createReport(@RequestBody ReportDto reportDto) {
         Report report = new Report();
-        report.setContent(content);
         report.setStatus(StatusUtil.PENDING);
+        BeanUtils.copyProperties(reportDto, report);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(reportService.add(report)));
     }
 
