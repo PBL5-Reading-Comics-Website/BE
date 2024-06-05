@@ -6,6 +6,8 @@ import com.example.readingcomicwebsite.repository.ReportRepository;
 import com.example.readingcomicwebsite.service.IReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +18,8 @@ public class ReportService implements IReportService {
     private final ReportRepository repository;
 
     @Override
-    public List<Report> findAll() {
-        return repository.findAll();
+    public Page<Report> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override

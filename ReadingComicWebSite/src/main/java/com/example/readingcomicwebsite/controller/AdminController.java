@@ -85,8 +85,15 @@ public class AdminController {
 
     // Endpoint for getting all reports
     @GetMapping("/reports")
-    public ResponseEntity<ApiDataResponse> getAllReports() {
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(reportService.findAll()));
+    public ResponseEntity<ApiDataResponse> getAllReports(
+            @RequestParam(required = false) String sortField,
+            @RequestParam(required = false) String sortOrder,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        Page<Report> reportPage = reportService.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
+        PageInfo pageInfo = PageUtils.makePageInfo(reportPage);
+        return ResponseEntity.ok(ApiDataResponse.success(reportPage.getContent(), pageInfo));
     }
 
     // Endpoint for getting a report by id
