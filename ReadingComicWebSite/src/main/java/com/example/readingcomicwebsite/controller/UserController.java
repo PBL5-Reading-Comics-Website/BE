@@ -212,7 +212,7 @@ public class UserController {
 
         // Return success message even if the report already exists
         // (as the report is not created again)
-        return ResponseEntity.ok(ApiDataResponse.error("Report successfully created"));
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(report));
     }
 
     //isLikedManga
