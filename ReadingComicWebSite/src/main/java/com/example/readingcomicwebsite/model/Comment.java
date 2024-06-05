@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "comment")
@@ -23,10 +24,10 @@ public class Comment {
     private String content;
 
     @Column(name = "create_at")
-    private Date createAt;
+    private Instant createAt;
 
     @Column(name = "update_at")
-    private Date updateAt;
+    private Instant updateAt;
 
     @Column(name = "reply_id")
     private Integer replyId;

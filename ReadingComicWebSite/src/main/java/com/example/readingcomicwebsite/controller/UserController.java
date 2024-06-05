@@ -192,13 +192,27 @@ public class UserController {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(userService.update(id, user)));
     }
 
-    // create report the comment (just report comment, not for manga)
     @PostMapping("/report")
     public ResponseEntity<ApiDataResponse> createReport(@RequestBody ReportDto reportDto) {
+        // Check if a report already exists for this comment
+        Report existingReport = reportService.findByComment(commentService.findById(reportDto.getCommentId()));
+        if (existingReport != null) {
+            return ResponseEntity.ok(ApiDataResponse.error("Report already exists for this comment."));
+        }
+
         Report report = new Report();
-        report.setStatus(StatusUtil.PENDING);
         BeanUtils.copyProperties(reportDto, report);
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(reportService.add(report)));
+        report.setStatus(StatusUtil.PENDING);
+        Manga manga = mangaService.findById(reportDto.getMangaId());
+        Comment comment = commentService.findById(reportDto.getCommentId());
+        report.setManga(manga);
+        report.setComment(comment);
+
+        reportService.add(report);
+
+        // Return success message even if the report already exists
+        // (as the report is not created again)
+        return ResponseEntity.ok(ApiDataResponse.error("Report successfully created"));
     }
 
     //isLikedManga

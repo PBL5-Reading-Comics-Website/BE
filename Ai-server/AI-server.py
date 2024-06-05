@@ -13,7 +13,7 @@ CORS(app)
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "",
+    "password": "111111",
     "database": "comic_reading",
 }
 

@@ -30,4 +30,9 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "manga_id")
     private Manga manga;
+
+    //comment
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 }

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -76,8 +77,10 @@ public class CommentService implements ICommentService {
         if (manga == null || user == null) {
             return null;
         }
-        comment.setManga(manga);
         comment.setUser(user);
+        comment.setCreateAt(Instant.now());
+        comment.setUpdateAt(comment.getUpdateAt() == null ? comment.getCreateAt() : comment.getUpdateAt());
+        comment.setManga(manga);
         return repository.save(comment);
     }
 

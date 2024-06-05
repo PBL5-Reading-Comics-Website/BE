@@ -1,5 +1,6 @@
 package com.example.readingcomicwebsite.service.impl;
 
+import com.example.readingcomicwebsite.model.Comment;
 import com.example.readingcomicwebsite.model.Report;
 import com.example.readingcomicwebsite.repository.ReportRepository;
 import com.example.readingcomicwebsite.service.IReportService;
@@ -22,6 +23,11 @@ public class ReportService implements IReportService {
     @Override
     public Report findById(Integer id) {
         return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Report findByComment(Comment comment) {
+        return repository.findByComment(comment);
     }
 
     @Override

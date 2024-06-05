@@ -1,5 +1,6 @@
 package com.example.readingcomicwebsite.service;
 
+import com.example.readingcomicwebsite.model.Comment;
 import com.example.readingcomicwebsite.model.Report;
 
 import java.util.List;
@@ -8,6 +9,8 @@ public interface IReportService {
     List<Report> findAll();
 
     Report findById(Integer id);
+
+    Report findByComment(Comment comment);
 
     Report save(Report report);
 
