@@ -10,12 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ReportService implements IReportService {
     private final ReportRepository repository;
+    private final CommentService commentService;
 
     @Override
     public Page<Report> findAll(Pageable pageable) {
@@ -55,5 +54,17 @@ public class ReportService implements IReportService {
     @Override
     public Report add(Report report) {
         return repository.save(report);
+    }
+
+    @Override
+    public Boolean acceptReport(Integer id) {
+        Report report = repository.findById(id).orElse(null);
+        if (report == null) {
+            return false;
+        }
+        Integer commentId = report.getComment().getId();
+        repository.deleteById(id);
+        commentService.deleteById(commentId);
+        return true;
     }
 }

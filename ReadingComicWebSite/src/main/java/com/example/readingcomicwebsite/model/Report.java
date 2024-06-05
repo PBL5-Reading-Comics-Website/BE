@@ -24,6 +24,7 @@ public class Report {
 
     //status
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private StatusUtil status;
 
     //manga

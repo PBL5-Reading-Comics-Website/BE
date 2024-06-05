@@ -5,8 +5,6 @@ import com.example.readingcomicwebsite.model.Report;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface IReportService {
     Page<Report> findAll(Pageable pageable);
 
@@ -21,4 +19,6 @@ public interface IReportService {
     void deleteById(Integer id);
 
     Report add(Report report);
+
+    Boolean acceptReport(Integer id);
 }

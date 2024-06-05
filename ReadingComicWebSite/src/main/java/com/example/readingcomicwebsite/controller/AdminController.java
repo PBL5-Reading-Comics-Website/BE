@@ -99,7 +99,29 @@ public class AdminController {
     // Endpoint for getting a report by id
     @GetMapping("/report/{id}")
     public ResponseEntity<ApiDataResponse> getReportById(@PathVariable Integer id) {
+        if (reportService.findById(id) == null) {
+            return ResponseEntity.ok(ApiDataResponse.error("Report not found"));
+        }
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(reportService.findById(id)));
+    }
+
+    // accept report
+    @PutMapping("/report/accept")
+    public ResponseEntity<ApiDataResponse> acceptReport(@RequestParam Integer id) {
+        if (!reportService.acceptReport(id)) {
+            return ResponseEntity.ok(ApiDataResponse.error("Accept report failed"));
+        }
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
+    }
+
+    // reject report
+    @PutMapping("/report/reject")
+    public ResponseEntity<ApiDataResponse> rejectReport(@RequestParam Integer id) {
+        if (reportService.findById(id) == null) {
+            return ResponseEntity.ok(ApiDataResponse.error("Reject report failed"));
+        }
+        reportService.deleteById(id);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
     }
 
     // Endpoint for deleting a report by id

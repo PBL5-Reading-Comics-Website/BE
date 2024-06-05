@@ -237,6 +237,9 @@ public class UserController {
     public ResponseEntity<ApiDataResponse> requestToBecomePoster(@RequestParam Integer userId) {
         Waiting waiting = new Waiting();
         waiting.setUser(userService.findById(userId));
+        if (waitingService.findByUserId(userId) != null) {
+            return ResponseEntity.ok(ApiDataResponse.error("You have already requested to become a poster"));
+        }
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(waitingService.add(waiting)));
     }
 }

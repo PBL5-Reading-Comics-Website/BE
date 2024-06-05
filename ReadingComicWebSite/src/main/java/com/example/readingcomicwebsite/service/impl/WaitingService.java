@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WaitingService implements IWaitingService {
     private final WaitingRepository repository;
+    private final UserService userService;
 
     @Override
     public Page<Waiting> findAll(Integer page, Integer size) {
@@ -26,7 +27,16 @@ public class WaitingService implements IWaitingService {
     }
 
     @Override
+    public Waiting findByUserId(Integer userId) {
+        return repository.findByUser(userService.findById(userId));
+    }
+
+    @Override
     public Waiting add(Waiting waiting) {
+        Waiting waitingDb = repository.findByUser(waiting.getUser());
+        if (waitingDb != null) {
+            return null;
+        }
         User userDb = waiting.getUser();
         if (userDb == null) {
             return null;
