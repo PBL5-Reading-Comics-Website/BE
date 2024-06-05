@@ -1,7 +1,8 @@
+import sys
 import mysql.connector
 import numpy as np
 import pandas as pd
-from flask import Flask, jsonify, request
+from flask import Flask, current_app, jsonify, request
 from flask_cors import CORS, cross_origin
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -115,7 +116,22 @@ def get_recommendations(user_id, top_n=10):
         # Recommend based on views if no reading history
         recommended_manga_indices = details_df["Views"].argsort()[::-1]
         recommended_mangas = details_df.iloc[recommended_manga_indices]
-        return recommended_mangas[["id", "Name", "Views"]].head(top_n).values.tolist()
+
+        # Get cover image URLs for recommended mangas
+        image_urls = get_manga_cover_images(recommended_mangas["id"].tolist())
+
+        # Ensure at least 10 recommendations
+        num_mangas = len(recommended_mangas)
+        if num_mangas < top_n:
+            # Repeat the top mangas if there are fewer than 10
+            top_mangas = recommended_mangas[["id", "Name", "Views"]].head(top_n - num_mangas)
+            recommended_mangas = pd.concat([recommended_mangas, top_mangas]).reset_index(drop=True)
+
+        # Return recommendations with image URLs
+        return [
+            [manga_id, name, views, image_urls.get(manga_id, "")]
+            for manga_id, name, views in recommended_mangas[["id", "Name", "Views"]].head(top_n).values.tolist()
+        ]
     else:
         # Create user profile
         user_profile = tag_df.loc[
@@ -140,7 +156,6 @@ def get_recommendations(user_id, top_n=10):
             for manga_id in recommended_manga_ids
             if manga_id not in reading_history_ids
         ]
-
         # Get recommended mangas with scores, names, and image URLs
         recommended_mangas = []
         image_urls = get_manga_cover_images(recommended_manga_ids)
@@ -169,7 +184,7 @@ def get_user_recommendations():
 
     # Format recommendations for JSON response
     formatted_recommendations = [
-        {"id": manga_id, "name": name, "score": f"{score:.4f}", "imageUrl": image_url}
+        {"id": manga_id, "name": name, "score": f"{score:.4f}", "image_url": image_url}
         for manga_id, name, score, image_url in recommendations
     ]
     print(formatted_recommendations)

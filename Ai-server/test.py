@@ -1,3 +1,4 @@
+import sys
 import mysql.connector
 import numpy as np
 import pandas as pd
@@ -11,6 +12,7 @@ db_config = {
     "database": "comic_reading",
 }
 
+
 def get_manga_data():
     """Fetches manga data (excluding cover_image) for recommendations."""
     try:
@@ -20,7 +22,8 @@ def get_manga_data():
             SELECT m.id, m.name, t.name AS tag, 
             GREATEST(m.view_number, 1) AS views 
             FROM manga m
-            LEFT JOIN tag t ON m.id = t.manga_id;
+            JOIN manga_tag mt ON m.id = mt.manga_id
+            LEFT JOIN tag t ON mt.tag_id = t.id;
             """
         cursor.execute(query)
         data = cursor.fetchall()
@@ -42,6 +45,7 @@ def get_manga_data():
             aggfunc=lambda x: 1,
             fill_value=0,
         ).reset_index()
+        print(details_df)
         return details_df
     except mysql.connector.Error as err:
         print(f"Error: {err}")
@@ -50,6 +54,7 @@ def get_manga_data():
         if connection.is_connected():
             cursor.close()
             connection.close()
+
 
 def get_manga_cover_images(manga_ids):
     """Fetches cover image URLs for a list of manga IDs."""
@@ -74,6 +79,7 @@ def get_manga_cover_images(manga_ids):
         if connection.is_connected():
             cursor.close()
             connection.close()
+
 
 def get_recommendations(user_id, top_n=10):
     """Recommends mangas based on user's reading history and tag similarity."""
@@ -106,7 +112,22 @@ def get_recommendations(user_id, top_n=10):
         # Recommend based on views if no reading history
         recommended_manga_indices = details_df["Views"].argsort()[::-1]
         recommended_mangas = details_df.iloc[recommended_manga_indices]
-        return recommended_mangas[["id", "Name", "Views"]].head(top_n).values.tolist()
+
+        # Get cover image URLs for recommended mangas
+        image_urls = get_manga_cover_images(recommended_mangas["id"].tolist())
+
+        # Ensure at least 10 recommendations
+        num_mangas = len(recommended_mangas)
+        if num_mangas < top_n:
+            # Repeat the top mangas if there are fewer than 10
+            top_mangas = recommended_mangas[["id", "Name", "Views"]].head(top_n - num_mangas)
+            recommended_mangas = pd.concat([recommended_mangas, top_mangas]).reset_index(drop=True)
+
+        # Return recommendations with image URLs
+        return [
+            [manga_id, name, views, image_urls.get(manga_id, "")]
+            for manga_id, name, views in recommended_mangas[["id", "Name", "Views"]].head(top_n).values.tolist()
+        ]
     else:
         # Create user profile
         user_profile = tag_df.loc[
@@ -134,21 +155,18 @@ def get_recommendations(user_id, top_n=10):
 
         # Get recommended mangas with scores, names, and image URLs
         recommended_mangas = []
-        image_urls = get_manga_cover_images(recommended_manga_ids)  # Fetch image URLs
+        image_urls = get_manga_cover_images(recommended_manga_ids)
+        print(recommended_manga_ids)
         for manga_id in recommended_manga_ids[:top_n]:
             score = similarity_scores[0][
                 details_df[details_df["id"] == manga_id].index[0]
             ]
             name = details_df[details_df["id"] == manga_id]["Name"].values[0]
-            image_url = image_urls.get(manga_id, "")  # Get image URL from dictionary
+            image_url = image_urls.get(manga_id, "") 
             recommended_mangas.append([manga_id, name, score, image_url])
         return recommended_mangas
 
-
-if __name__ == "__main__":
-    user_id = 1  # Example user ID
-    recommendations = get_recommendations(user_id, top_n=10)
-
-    # Format recommendations for printing
-    for manga_id, name, score, image_url in recommendations:
-        print(f"Manga ID: {manga_id}, Name: {name}")
+# Example Usage
+user_id = 1  # Replace with actual user ID
+recommendations = get_recommendations(user_id)
+print(recommendations)
