@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,14 +42,12 @@ public class ChapterService implements IChapterService {
             return null;
         }
         Chapter chapter = new Chapter();
-        chapter.setManga(manga);
         BeanUtils.copyProperties(chapterDto, chapter);
-        List<String> images = chapterDto.getImages();
-        repository.save(chapter);
-        for (String image : images) {
-            imageService.add(new Image(image, chapter));
-        }
-        return chapter;
+        chapter.setManga(manga);
+        chapter.setCommentNumber(0);
+        chapter.setPublishAt(Instant.now());
+        chapter.setUpdateAt(chapter.getUpdateAt() == null ? chapter.getPublishAt() : chapter.getUpdateAt());
+        return repository.save(chapter);
     }
 
     @Override

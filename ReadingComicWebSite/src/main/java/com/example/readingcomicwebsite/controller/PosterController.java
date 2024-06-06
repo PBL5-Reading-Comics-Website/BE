@@ -5,10 +5,13 @@ import com.example.readingcomicwebsite.dto.ChapterDto;
 import com.example.readingcomicwebsite.dto.MangaDto;
 import com.example.readingcomicwebsite.model.*;
 import com.example.readingcomicwebsite.service.*;
+import com.example.readingcomicwebsite.service.impl.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/poster")
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class PosterController {
     private final IMangaService mangaService;
     private final IChapterService chapterService;
+    private final ImageService imageService;
 
     // add tag for manga
     @PostMapping("/tag")
@@ -33,8 +37,18 @@ public class PosterController {
             @RequestBody ChapterDto chapterDto,
             @RequestParam Integer mangaId
     ) {
-
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(chapterService.add(mangaId, chapterDto)));
+        Chapter chapter = chapterService.add(mangaId, chapterDto);
+        List<String> images = chapterDto.getImages();
+        if (images == null || images.isEmpty()) {
+            return ResponseEntity.ok(ApiDataResponse.error("Images is required"));
+        }
+        for (String imageName : images) {
+            String[] parts = imageName.split("/");
+            String imageLink = parts[parts.length - 1].split("\\.")[0];
+            Image image = new Image(imageLink, chapter);
+            imageService.add(image);
+        }
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(chapter));
     }
 
     // Endpoint for updating a chapter by id
@@ -51,6 +65,13 @@ public class PosterController {
     public ResponseEntity<ApiDataResponse> deleteChapterById(@PathVariable Integer id) {
         chapterService.deleteById(id);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
+    }
+
+    @GetMapping("/manga/{name}")
+    public ResponseEntity<ApiDataResponse> getMangaByName(
+            @PathVariable(value = "name", required = false) String name
+    ) {
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.findByName(name, null)));
     }
 
     @PostMapping("/manga")

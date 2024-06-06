@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "chapter")
@@ -29,10 +30,10 @@ public class Chapter {
     private Integer commentNumber;
 
     @Column(name = "publish_at")
-    private Date publishAt;
+    private Instant publishAt;
 
     @Column(name = "update_at")
-    private Date updateAt;
+    private Instant updateAt;
 
     @ManyToOne
     @JoinColumn(name = "manga_id")
