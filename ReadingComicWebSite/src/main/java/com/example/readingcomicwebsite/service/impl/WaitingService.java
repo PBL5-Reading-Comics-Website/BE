@@ -50,21 +50,31 @@ public class WaitingService implements IWaitingService {
     }
 
     @Override
-    public void acceptWaiting(Integer id) {
+    public Boolean acceptWaiting(Integer id) {
         Waiting waiting = repository.findById(id).orElse(null);
         if (waiting == null) {
-            return;
+            return false;
         }
         User user = waiting.getUser();
         if (user == null) {
-            return;
+            return false;
         }
         user.setRole(Role.POSTER);
         repository.deleteById(id);
+        return true;
     }
 
     @Override
-    public void rejectWaiting(Integer id) {
+    public Boolean rejectWaiting(Integer id) {
+        Waiting waiting = repository.findById(id).orElse(null);
+        if (waiting == null) {
+            return false;
+        }
+        User user = waiting.getUser();
+        if (user == null) {
+            return false;
+        }
         repository.deleteById(id);
+        return true;
     }
 }

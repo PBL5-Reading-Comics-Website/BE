@@ -8,6 +8,8 @@ public interface ITagService {
     List<Tag> findAll();
 
     Tag findById(Integer id);
+    
+    Tag findByName(String name);
 
     Tag add(Tag tag);
 

@@ -19,5 +19,5 @@ public class MangaDto {
     private String artist;
     private String description;
     private String coverImage;
-    private List<Tag> tags;
+    private String[] tags;
 }
