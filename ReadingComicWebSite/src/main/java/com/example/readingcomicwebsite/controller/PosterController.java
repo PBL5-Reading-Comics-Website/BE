@@ -6,12 +6,16 @@ import com.example.readingcomicwebsite.dto.MangaDto;
 import com.example.readingcomicwebsite.model.*;
 import com.example.readingcomicwebsite.service.*;
 import com.example.readingcomicwebsite.service.impl.ImageService;
+import com.example.readingcomicwebsite.service.impl.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/poster")
@@ -21,6 +25,7 @@ public class PosterController {
     private final IMangaService mangaService;
     private final IChapterService chapterService;
     private final ImageService imageService;
+    private final TagService tagService;
 
     // add tag for manga
     @PostMapping("/tag")
@@ -81,6 +86,24 @@ public class PosterController {
     ) {
         Manga manga = new Manga();
         BeanUtils.copyProperties(mangaDto, manga);
+        List<Tag> tags = new ArrayList<>();
+
+        // Convert string array to a list of Tag objects
+        for (String tagName : mangaDto.getTags()) {
+            Tag tag = tagService.findByName(tagName);
+            if (tag == null) {
+                tag = new Tag();
+                tag.setName(tagName);
+                tagService.add(tag);
+            } else {
+                tag = tagService.findByName(tagName);
+            }
+            tags.add(tag);
+        }
+
+        // Set the tags in the Manga entity
+        manga.setTags(new HashSet<>(tags));
+
         System.out.println(manga);
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.add(manga, userId)));
     }

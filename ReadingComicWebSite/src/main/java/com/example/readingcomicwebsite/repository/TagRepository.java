@@ -18,7 +18,7 @@ public interface TagRepository extends JpaRepository<Tag, Integer> {
             "WHERE mt.manga_id = :mangaId", nativeQuery = true)
     List<Tag> findAllByMangaId(@Param("mangaId") Integer mangaId);
 
-    List<Tag> findAllByNameLike(String name);
+    Tag findByName(String name);
 
     //find all tag, no duplicate
     @Query(value = "SELECT DISTINCT tag.* FROM tag", nativeQuery = true)

@@ -37,6 +37,13 @@ public class ReadingHistoryService implements IReadingHistoryService {
             return null;
         if (readingHistory.getUser() == null || readingHistory.getUser().getId() == null)
             return null;
+        ReadingHistory readingHistoryDb = repository.findByUserIdAndMangaId(readingHistory.getUser().getId(),
+                readingHistory.getManga().getId());
+        if (readingHistoryDb != null) {
+            readingHistoryDb.setChapter(readingHistory.getChapter());
+            readingHistoryDb.setEndAt(readingHistory.getEndAt());
+            return repository.save(readingHistoryDb);
+        }
         return repository.save(readingHistory);
     }
 

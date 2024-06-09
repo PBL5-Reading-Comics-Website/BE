@@ -26,6 +26,7 @@ public class MangaService implements IMangaService {
     private final MangaRepository repository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final TagService tagService;
 
     @Override
     public Page<Manga> findAll(String sortField, String sortOrder, Integer page, Integer size) {
@@ -56,12 +57,7 @@ public class MangaService implements IMangaService {
         } else if (manga.getArtist() == null || manga.getArtist().isEmpty()) {
             return null;
         }
-        System.out.print("Manga tags: ");
-        for (Tag tag : manga.getTags()) {
-            System.out.print(tag.getName() + ", ");
-        }
-        System.out.println("");
-        System.out.println("Name: " + manga.getName());
+
         manga.setUpdateUser(userId);
         manga.setPublishAt(Instant.now());
         manga.setUpdateAt(manga.getUpdateAt() == null ? manga.getPublishAt() : manga.getUpdateAt());
@@ -90,29 +86,13 @@ public class MangaService implements IMangaService {
         if (mangaDb == null || user == null) {
             return null;
         }
-        for (Manga manga : user.getLikedManga()) {
-            if (manga == mangaDb) {
-                throw new Error("Manga already liked");
-            }
-        }
-        user.getLikedManga().add(mangaDb);
-        mangaDb.setFavouriteNumber(mangaDb.getFavouriteNumber() + 1);
-        return repository.save(mangaDb);
-    }
-
-    @Override
-    public Manga dislikeManga(Integer id, Integer userId) {
-        Manga mangaDb = repository.findById(id).orElse(null);
-        User user = userRepository.findById(userId).orElse(null);
-        if (mangaDb == null || user == null) {
-            return null;
-        }
         if (isLikedManga(id, userId)) {
             user.getLikedManga().remove(mangaDb);
-            mangaDb.setFavouriteNumber(mangaDb.getFavouriteNumber() - 1);
+            return repository.save(mangaDb);
+        } else {
+            user.getLikedManga().add(mangaDb);
             return repository.save(mangaDb);
         }
-        throw new Error("Manga not liked");
     }
 
     @Override

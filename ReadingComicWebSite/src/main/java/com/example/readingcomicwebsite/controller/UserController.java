@@ -41,6 +41,9 @@ import com.example.readingcomicwebsite.util.StatusUtil;
 
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Date;
+
+
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -117,6 +120,20 @@ public class UserController {
         return ResponseEntity.ok(ApiDataResponse.success(readingHistories.getContent(), pageInfo));
     }
 
+    // add reading history
+    @PostMapping("/reading-history")
+    public ResponseEntity<ApiDataResponse> addReadingHistory(
+            @RequestParam Integer userId,
+            @RequestParam Integer mangaId,
+            @RequestParam Integer chapterId
+    ) {
+        Date endAt = new Date(System.currentTimeMillis());
+        User user = userService.findById(userId);
+        Manga manga = mangaService.findById(mangaId);
+        Chapter chapter = chapterService.findById(chapterId);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(readingHistoryService.add(new ReadingHistory(endAt, user, manga, chapter))));
+    }
+
     // Endpoint for deleting a reading history by id
     @DeleteMapping("/reading-history/{id}")
     public ResponseEntity<ApiDataResponse> deleteReadingHistoryById(@PathVariable Integer id) {
@@ -172,16 +189,6 @@ public class UserController {
             @RequestParam Integer userId
     ) {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.likeManga(id, userId)));
-    }
-
-    //dislike manga
-    @PutMapping("/dislike-manga/{id}")
-    public ResponseEntity<ApiDataResponse> dislikeManga(
-            @PathVariable Integer id,
-            @RequestParam Integer userId
-    ) {
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.dislikeManga(id,
-                userId)));
     }
 
     //update user image

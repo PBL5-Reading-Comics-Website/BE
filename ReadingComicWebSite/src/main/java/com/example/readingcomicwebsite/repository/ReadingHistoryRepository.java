@@ -14,6 +14,8 @@ import java.util.List;
 public interface ReadingHistoryRepository extends JpaRepository<ReadingHistory, Integer> {
     List<ReadingHistory> findAllByUserId(Integer userId);
 
+    ReadingHistory findByUserIdAndMangaId(Integer userId, Integer mangaId);
+
     Page<ReadingHistory> findByUserId(Integer userId, Pageable Pageable);
 
     @Query(value = "SELECT m.name AS manga_name, m.view_number AS view_count, GROUP_CONCAT(t.name) AS tags " +

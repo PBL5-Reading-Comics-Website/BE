@@ -33,4 +33,11 @@ public class ReadingHistory {
     @ManyToOne
     @JoinColumn(name = "chapter_id")
     private Chapter chapter;
+
+    public ReadingHistory(Date endAt, User user, Manga manga, Chapter chapter) {
+        this.endAt = endAt;
+        this.user = user;
+        this.manga = manga;
+        this.chapter = chapter;
+    }
 }

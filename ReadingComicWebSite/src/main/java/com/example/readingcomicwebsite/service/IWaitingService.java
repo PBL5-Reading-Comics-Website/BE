@@ -14,7 +14,7 @@ public interface IWaitingService {
 
     void deleteById(Integer id);
 
-    void acceptWaiting(Integer id);
+    Boolean acceptWaiting(Integer id);
 
-    void rejectWaiting(Integer id);
+    Boolean rejectWaiting(Integer id);
 }

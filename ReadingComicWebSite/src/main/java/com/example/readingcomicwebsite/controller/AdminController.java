@@ -156,14 +156,18 @@ public class AdminController {
     // accept waiting user
     @PutMapping("/waiting/accept")
     public ResponseEntity<ApiDataResponse> acceptWaiting(@RequestParam Integer id) {
-        waitingService.acceptWaiting(id);
+        if (!waitingService.acceptWaiting(id)) {
+            return ResponseEntity.ok(ApiDataResponse.error("Accept waiting failed"));
+        }
         return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
     }
 
     // reject waiting user
     @PutMapping("/waiting/reject")
     public ResponseEntity<ApiDataResponse> rejectWaiting(@RequestParam Integer id) {
-        waitingService.rejectWaiting(id);
+        if (!waitingService.rejectWaiting(id)) {
+            return ResponseEntity.ok(ApiDataResponse.error("Reject waiting failed"));
+        }
         return ResponseEntity.ok(ApiDataResponse.successWithoutMetaAndData());
     }
 }

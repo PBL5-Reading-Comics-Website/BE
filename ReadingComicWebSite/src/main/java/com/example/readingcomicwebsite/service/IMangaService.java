@@ -22,8 +22,6 @@ public interface IMangaService {
 
     Manga likeManga(Integer id, Integer userId);
 
-    Manga dislikeManga(Integer id, Integer userId);
-
     Manga viewManga(Integer id);
 
     List<Manga> getTop10NewestManga();

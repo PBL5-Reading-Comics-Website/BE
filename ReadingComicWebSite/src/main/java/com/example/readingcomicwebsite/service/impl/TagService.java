@@ -25,6 +25,11 @@ public class TagService implements ITagService {
     }
 
     @Override
+    public Tag findByName(String name) {
+        return repository.findByName(name);
+    }
+
+    @Override
     public Tag add(Tag tag) {
         if (tag.getName() == null || tag.getName().isEmpty())
             return null;
