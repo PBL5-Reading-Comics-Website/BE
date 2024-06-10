@@ -91,10 +91,12 @@ public class MangaService implements IMangaService {
         }
         if (isLikedManga(id, userId)) {
             // Remove manga from user's liked manga list
+            manga.setFavouriteNumber(manga.getFavouriteNumber() - 1);
             user.getLikedManga().remove(manga);
             return userRepository.save(user); // Save the user
         } else {
             // Add manga to user's liked manga list
+            manga.setFavouriteNumber(manga.getFavouriteNumber() + 1);
             user.getLikedManga().add(manga);
             return userRepository.save(user); // Save the user
         }

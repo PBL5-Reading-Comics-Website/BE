@@ -77,6 +77,7 @@ public class CommentService implements ICommentService {
         if (manga == null || user == null) {
             return null;
         }
+        manga.setCommentNumber(manga.getCommentNumber() + 1);
         comment.setUser(user);
         comment.setCreateAt(Instant.now());
         comment.setUpdateAt(comment.getUpdateAt() == null ? comment.getCreateAt() : comment.getUpdateAt());
