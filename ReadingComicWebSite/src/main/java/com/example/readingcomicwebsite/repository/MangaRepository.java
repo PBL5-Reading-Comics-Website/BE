@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface MangaRepository extends JpaRepository<Manga, Integer> {
-
-    Page<Manga> findAllByNameLike(String name, Pageable pageable);
+    @Query(value = "SELECT m.* FROM manga m WHERE m.name LIKE :name", nativeQuery = true)
+    Page<Manga> findByName(@Param("name") String name, Pageable pageable);
 
     List<Manga> findTop10ByOrderByPublishAtDesc();
 
@@ -30,7 +30,7 @@ public interface MangaRepository extends JpaRepository<Manga, Integer> {
     @Query("SELECT m FROM Manga m WHERE MONTH(m.publishAt) IN (10, 11, 12)")
     Page<Manga> findAllPublishedInFourthQuarter(Pageable pageable);
 
-    @Query(value = "SELECT distinct manga.* FROM manga, tag WHERE manga.name LIKE :name OR tag.name = :tag", nativeQuery = true)
+    @Query(value = "SELECT m.* FROM manga m JOIN manga_tag mt ON m.id = mt.manga_id JOIN tag t ON mt.tag_id = t.id WHERE t.name = :tag AND m.name LIKE :name", nativeQuery = true)
     Page<Manga> findAllByTagIdAndName(@Param("tag") String tag, @Param("name") String name, Pageable pageable);
 
     List<Manga> findAllByUpdateUser(Integer userId);

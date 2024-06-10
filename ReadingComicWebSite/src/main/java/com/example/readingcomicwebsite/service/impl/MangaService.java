@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -44,7 +45,7 @@ public class MangaService implements IMangaService {
 
     @Override
     public Page<Manga> findByName(String name, Pageable pageable) {
-        return repository.findAllByNameLike(name, pageable);
+        return repository.findByName(name, pageable);
     }
 
     @Override
@@ -135,15 +136,12 @@ public class MangaService implements IMangaService {
                                         Integer size) {
         if (tag == null && name == null) {
             return repository.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
-        } else if (tag == null) {
-            return repository.findAllByNameLike(
+        } else if (Objects.equals(tag, "") && Objects.equals(name, "")) {
+            return repository.findAll(PageUtils.makePageRequest(sortField, sortOrder, page, size));
+        } else if (Objects.equals(tag, "")) {
+            return repository.findByName(
                     "%" + name + "%",
                     PageUtils.makePageRequest(sortField, sortOrder, page, size));
-        } else if (name == null) {
-//            return repository.findAllByTagId(
-//                    Integer.parseInt(tag),
-//                    PageUtils.makePageRequest(sortField, sortOrder, page, size));
-            return null;
         }
         return repository.findAllByTagIdAndName(
                 tag,
