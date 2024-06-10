@@ -85,12 +85,33 @@ public class UserController {
         return ResponseEntity.ok(ApiDataResponse.success(followings.getContent(), pageInfo));
     }
 
+    @GetMapping("/is-following-manga")
+    public ResponseEntity<ApiDataResponse> isFollowingManga(
+            @RequestParam Integer userId,
+            @RequestParam Integer mangaId
+    ) {
+        boolean isFollowing = followingService.isFollowingManga(userId, mangaId);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(isFollowing));
+    }
+
     // following: {userId, mangaId}
     @PostMapping("/following")
-    public ResponseEntity<ApiDataResponse> addFollowing(@RequestParam Integer userId, @RequestParam Integer mangaId) {
+    public ResponseEntity<ApiDataResponse> toggleFollow(
+            @RequestParam Integer userId,
+            @RequestParam Integer mangaId
+    ) {
         User user = userService.findById(userId);
         Manga manga = mangaService.findById(mangaId);
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(followingService.add(new Following(user, manga))));
+
+        if (followingService.isFollowingManga(userId, mangaId)) {
+            // User is following, unfollow
+            followingService.deleteByUserAndManga(user, manga);
+            return ResponseEntity.ok(ApiDataResponse.successWithoutMeta("Unfollowed manga"));
+        } else {
+            // User is not following, follow
+            followingService.add(new Following(user, manga));
+            return ResponseEntity.ok(ApiDataResponse.successWithoutMeta("Followed manga"));
+        }
     }
 
     // Endpoint for deleting a following by id
@@ -191,6 +212,15 @@ public class UserController {
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.likeManga(id, userId)));
     }
 
+    @GetMapping("/is-liked-manga")
+    public ResponseEntity<ApiDataResponse> isLikedManga(
+            @RequestParam Integer mangaId,
+            @RequestParam Integer userId
+    ) {
+        boolean isLiked = mangaService.isLikedManga(mangaId, userId);
+        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(isLiked));
+    }
+
     //update user image
     @PutMapping("/update-image/{id}")
     public ResponseEntity<ApiDataResponse> updateImage(@PathVariable Integer id, @RequestBody AvatarDto avatarDto) {
@@ -220,15 +250,6 @@ public class UserController {
         // Return success message even if the report already exists
         // (as the report is not created again)
         return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(report));
-    }
-
-    //isLikedManga
-    @GetMapping("/is-liked-manga")
-    public ResponseEntity<ApiDataResponse> isLikedManga(
-            @RequestParam Integer mangaId,
-            @RequestParam Integer userId
-    ) {
-        return ResponseEntity.ok(ApiDataResponse.successWithoutMeta(mangaService.isLikedManga(mangaId, userId)));
     }
 
     // get all read manga in reading history

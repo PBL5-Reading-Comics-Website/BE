@@ -28,6 +28,7 @@ public class MangaService implements IMangaService {
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
     private final TagService tagService;
+    private final MangaRepository mangaRepository;
 
     @Override
     public Page<Manga> findAll(String sortField, String sortOrder, Integer page, Integer size) {
@@ -81,6 +82,7 @@ public class MangaService implements IMangaService {
     }
 
     @Override
+    @Transactional
     public Manga likeManga(Integer id, Integer userId) {
         Manga mangaDb = repository.findById(id).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
@@ -88,11 +90,19 @@ public class MangaService implements IMangaService {
             return null;
         }
         if (isLikedManga(id, userId)) {
+            // Remove manga from user's liked manga list
             user.getLikedManga().remove(mangaDb);
-            return repository.save(mangaDb);
+            // Remove user from manga's liked users list
+            mangaDb.getLikedUsers().remove(user);
+            userRepository.save(user); // Save the user
+            return repository.save(mangaDb);  // Save the manga
         } else {
+            // Add manga to user's liked manga list
             user.getLikedManga().add(mangaDb);
-            return repository.save(mangaDb);
+            // Add user to manga's liked users list
+            mangaDb.getLikedUsers().add(user);
+            userRepository.save(user); // Save the user
+            return repository.save(mangaDb); // Save the manga
         }
     }
 
@@ -176,14 +186,13 @@ public class MangaService implements IMangaService {
 
     @Override
     public Boolean isLikedManga(Integer mangaId, Integer userId) {
-        Manga mangaDb = repository.findById(mangaId).orElse(null);
+        Manga manga = mangaRepository.findById(mangaId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
-        if (mangaDb == null || user == null) {
+
+        if (manga == null || user == null) {
             return null;
         }
-        if (user.getLikedManga().contains(mangaDb)) {
-            return true;
-        }
-        return false;
+
+        return user.getLikedManga().contains(manga);
     }
 }

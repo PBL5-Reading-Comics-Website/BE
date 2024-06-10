@@ -1,6 +1,8 @@
 package com.example.readingcomicwebsite.service.impl;
 
 import com.example.readingcomicwebsite.model.Following;
+import com.example.readingcomicwebsite.model.Manga;
+import com.example.readingcomicwebsite.model.User;
 import com.example.readingcomicwebsite.repository.FollowingRepository;
 import com.example.readingcomicwebsite.service.IFollowingService;
 import com.example.readingcomicwebsite.util.PageUtils;
@@ -9,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,5 +55,16 @@ public class FollowingService implements IFollowingService {
     public Page<Following> findByUserId(Integer userId, String sortField, String sortOrder, Integer page, Integer size) {
         Pageable pageable = PageUtils.makePageRequest(sortField, sortOrder, page, size);
         return repository.findByUserId(userId, pageable);
+    }
+
+    @Transactional
+    @Override
+    public void deleteByUserAndManga(User user, Manga manga) {
+        repository.deleteByUserAndManga(user, manga);
+    }
+
+    @Override
+    public boolean isFollowingManga(Integer userId, Integer mangaId) {
+        return repository.existsByUser_IdAndManga_Id(userId, mangaId);
     }
 }

@@ -219,8 +219,8 @@ public class PublicController {
     public ResponseEntity<ApiDataResponse> getMangaByTagAndName(
             @RequestParam(required = false) String tag,
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) String sortField,
-            @RequestParam(required = false) String sortOrder,
+            @RequestParam(defaultValue = "id") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ) {
