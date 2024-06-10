@@ -217,8 +217,8 @@ public class PublicController {
     //get all manga by tag and name, sort by publish_at desc
     @GetMapping("/manga")
     public ResponseEntity<ApiDataResponse> getMangaByTagAndName(
-            @RequestParam(required = false) String tag,
-            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "", required = false) String tag,
+            @RequestParam(defaultValue = "", required = false) String name,
             @RequestParam(defaultValue = "id") String sortField,
             @RequestParam(defaultValue = "asc") String sortOrder,
             @RequestParam(defaultValue = "1") Integer page,

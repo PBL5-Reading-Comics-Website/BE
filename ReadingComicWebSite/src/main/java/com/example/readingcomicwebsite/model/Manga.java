@@ -88,11 +88,6 @@ public class Manga {
     @JsonBackReference // This annotation is needed for JSON serialization
     private Set<Tag> tags = new HashSet<>();
 
-    //liked user
-    @ManyToMany(mappedBy = "likedManga")
-    @Fetch(FetchMode.JOIN)
-    private Set<User> likedUsers = new HashSet<>();
-
     @JsonIgnore
     public Set<Tag> getTags() {
         return tags;
