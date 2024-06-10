@@ -83,26 +83,20 @@ public class MangaService implements IMangaService {
 
     @Override
     @Transactional
-    public Manga likeManga(Integer id, Integer userId) {
-        Manga mangaDb = repository.findById(id).orElse(null);
+    public User likeManga(Integer id, Integer userId) {
+        Manga manga = repository.findById(id).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
-        if (mangaDb == null || user == null) {
+        if (manga == null || user == null) {
             return null;
         }
         if (isLikedManga(id, userId)) {
             // Remove manga from user's liked manga list
-            user.getLikedManga().remove(mangaDb);
-            // Remove user from manga's liked users list
-            mangaDb.getLikedUsers().remove(user);
-            userRepository.save(user); // Save the user
-            return repository.save(mangaDb);  // Save the manga
+            user.getLikedManga().remove(manga);
+            return userRepository.save(user); // Save the user
         } else {
             // Add manga to user's liked manga list
-            user.getLikedManga().add(mangaDb);
-            // Add user to manga's liked users list
-            mangaDb.getLikedUsers().add(user);
-            userRepository.save(user); // Save the user
-            return repository.save(mangaDb); // Save the manga
+            user.getLikedManga().add(manga);
+            return userRepository.save(user); // Save the user
         }
     }
 

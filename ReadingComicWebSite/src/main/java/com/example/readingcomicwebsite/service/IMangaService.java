@@ -2,6 +2,7 @@ package com.example.readingcomicwebsite.service;
 
 import com.example.readingcomicwebsite.model.Manga;
 import com.example.readingcomicwebsite.model.Tag;
+import com.example.readingcomicwebsite.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,7 +21,7 @@ public interface IMangaService {
 
     void deleteById(Integer id);
 
-    Manga likeManga(Integer id, Integer userId);
+    User likeManga(Integer id, Integer userId);
 
     Manga viewManga(Integer id);
 
